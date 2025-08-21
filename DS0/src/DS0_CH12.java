@@ -17,15 +17,3 @@ public class DS0_CH12 {
 
     }
 }
-
-/*
-[[a, i, a, -, a, x, a, a, a],
-[a, a, a, -, a, a, a, -, a],
-[a, a, -, -, -, -, -, -, a],
-[a, a, -, x, a, a, a, -, a]]
-
-[[a, i, a, X, a, x, a, a, a],
-[a, a, a, X, a, a, a, X, a],
-[a, a, X, X, X, X, X, X, a],
-[a, a, X, x, a, a, a, X, a]]
-*/
