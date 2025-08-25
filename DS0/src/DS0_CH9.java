@@ -4,8 +4,5 @@ public class DS0_CH9 {
         if(paramA+1==paramB) return paramB+paramA;
         else return paramA+ summation(paramA+1, paramB);
     }
-    public static void main(String[] args)
-    {
-        System.out.print(summation(2,2));
-    }
+
 }
