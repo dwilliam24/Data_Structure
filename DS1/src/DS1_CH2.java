@@ -22,7 +22,7 @@ public class DS1_CH2
         int e=0;
         for (String x: names)
         {
-            if ("AEIOUaeiou".contains(" "+x.charAt(0))) {
+            if ("AEIOUaeiou".contains(""+x.charAt(0))) {
                 e++;
             }
         }
