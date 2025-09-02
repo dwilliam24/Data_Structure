@@ -20,15 +20,25 @@ public class DS1_CH4
         }
         String[][] full = new String[Integer.parseInt(String.valueOf(nums.get(0).charAt(2)))][Integer.parseInt(String.valueOf(nums.get(0).charAt(0)))];
         nums.remove(0);
-        int[] last = new int[full.length];
-
 
         for (int x = 0; x < full.length; x++) {
             full[x] = nums.get(x).split(" ");
         }
 
-       int[][] sums = new int[full.length][full[0].length];
+        int biggest=0;
+        for (int y = 0; y < full.length; y++) {
+            for (int x = 0; x < full[0].length; x++) {
 
-        for ()
+                int num=Integer.parseInt(full[y][x]);
+                if (x-1>=0)num+=Integer.parseInt(full[y][x-1]);
+                if (x+1<full[0].length) num+=Integer.parseInt(full[y][x+1]);
+                if (y-1>=0)num+=Integer.parseInt(full[y-1][x]);
+                if (y+1<full.length)num+=Integer.parseInt(full[y+1][x]);
+                if (num>biggest)biggest=num;
+            }
+
+        }
+
+        return biggest;
     }
 }
