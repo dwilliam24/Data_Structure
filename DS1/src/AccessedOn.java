@@ -14,6 +14,7 @@ public class AccessedOn {
             FileWriter fileWriter = new FileWriter(fileRef,true);
             PrintWriter printWriter = new PrintWriter(fileWriter);
 
+
             ZonedDateTime date = ZonedDateTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E MMM dd HH:mm:ss z u");
 
@@ -26,7 +27,6 @@ public class AccessedOn {
         {
             e.printStackTrace();
             System.out.println(e);
-            System.exit(0);
         }
 
     }
