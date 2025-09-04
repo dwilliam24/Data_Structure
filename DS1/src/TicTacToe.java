@@ -1,9 +1,8 @@
-import com.sun.source.tree.WhileLoopTree;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class TicTacToe {
@@ -15,17 +14,42 @@ public class TicTacToe {
                 fileRef.createNewFile();
             Scanner scanner = new Scanner(fileRef);
             list = new ArrayList<>();
-            while (scanner.hasNextInt()) {
+
+            while (scanner.hasNextLine()) {
                 list.add(scanner.nextLine());
             }
-            scanner.close();
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e);
         }
         Character[][] board = new Character[3][3];
-        for (int x=0; x<list.size(); x++) {
-            board[x]=list.get(x).split(" ");
+        if (list.isEmpty()){
+            board= new Character[][]{{' ', ' ', ' '}, {' ', ' ', ' '}, {' ', ' ', ' '}};
+        }
+        else {
+            String[][] stringBoard = new String[3][3];
+            for (int x = 0; x < list.size(); x++) {
+                stringBoard[x] = list.get(x).split(" ");
+            }
+
+            for (int x = 0; x < stringBoard.length; x++) {
+                for (int y = 0; y < stringBoard[0].length; y++) {
+                    board[y][x] = stringBoard[y][x].charAt(0);
+                }
+            }
+            System.out.println("Game save loaded.");
+        }
+        Scanner scanner = new Scanner(System.in);
+        while(!isWin(board))
+        {
+            printBoard(board);
+            System.out.println("Entering a 3 for the column or row will save the game.");
+            System.out.println("Enter a column from 0 to 2:");
+            while (scanner.nextInt()<0||scanner.nextInt()>3)
+            {
+                System.out.println("Enter a column from 0 to 2:");
+                if (scanner.nextInt())
+            }
         }
 
 
@@ -55,9 +79,9 @@ public class TicTacToe {
         if (board[1][0].equals(board[1][1])&&board[1][1].equals(board[1][2])){return true;}
         if (board[2][0].equals(board[2][1])&&board[2][1].equals(board[2][2])){return true;}
 
+        if (board[0][0].equals(board[1][0])&&board[1][0].equals(board[2][0])){return true;}
         if (board[0][1].equals(board[1][1])&&board[1][1].equals(board[2][1])){return true;}
         if (board[0][2].equals(board[1][2])&&board[1][2].equals(board[2][2])){return true;}
-        if (board[0][3].equals(board[1][3])&&board[1][3].equals(board[2][3])){return true;}
 
         if (board[0][0].equals(board[1][1])&&board[1][1].equals(board[2][2])){return true;}
         if (board[0][2].equals(board[1][1])&&board[1][1].equals(board[2][0])){return true;}
@@ -85,5 +109,11 @@ public class TicTacToe {
         return new int[]{x, y};
     }
 
-
+    public static void printBoard(Character[][] board){
+        System.out.println(" "+board[0][0]+" | "+board[0][1]+" | "+board[0][2]+" ");
+        System.out.println("-----------");
+        System.out.println(" "+board[1][0]+" | "+board[1][1]+" | "+board[1][2]+" ");
+        System.out.println("-----------");
+        System.out.println(" "+board[2][0]+" | "+board[2][1]+" | "+board[2][2]+" ");
+    }
 }
