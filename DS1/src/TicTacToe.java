@@ -1,18 +1,40 @@
+import com.sun.source.tree.WhileLoopTree;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class TicTacToe {
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
+        ArrayList<String> list = null;
+        try {
+            File fileRef = new File("C:\\Users\\k2306075\\OneDrive - Katy Independent School District\\GitHub\\Data_Structure\\DS1\\TicTacToe.txt");
+            if (!fileRef.exists())
+                fileRef.createNewFile();
+            Scanner scanner = new Scanner(fileRef);
+            list = new ArrayList<>();
+            while (scanner.hasNextInt()) {
+                list.add(scanner.nextLine());
+            }
+            scanner.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e);
+        }
         Character[][] board = new Character[3][3];
-        board = new Character[][]{{'a', 'c', 'b'}, {'a', 'v', 'c'}, {'d', 'f', 'j'}};
-        //make a method
+        for (int x=0; x<list.size(); x++) {
+            board[x]=list.get(x).split(" ");
+        }
+
+
+    }
+
+
+    public static void saveBoard(Character[][] board) {
         try{
             File fileRef = new File("C:\\Users\\k2306075\\OneDrive - Katy Independent School District\\GitHub\\Data_Structure\\DS1\\TicTacToe.txt");
-            if(!fileRef.exists())
-                fileRef.createNewFile();
             FileWriter fileWriter = new FileWriter(fileRef,false);
             PrintWriter printWriter = new PrintWriter(fileWriter);
             printWriter.println(board[0][0]+" "+board[0][1]+" "+board[0][2]);
@@ -22,25 +44,45 @@ public class TicTacToe {
             printWriter.close();
 
         }
-        catch (Exception e){
+        catch (Exception e) {
             e.printStackTrace();
             System.out.println(e);
         }
     }
-
     public static boolean isWin(Character[][] board)
     {
+        if (board[0][0].equals(board[0][1])&&board[0][1].equals(board[0][2])){return true;}
+        if (board[1][0].equals(board[1][1])&&board[1][1].equals(board[1][2])){return true;}
+        if (board[2][0].equals(board[2][1])&&board[2][1].equals(board[2][2])){return true;}
+
+        if (board[0][1].equals(board[1][1])&&board[1][1].equals(board[2][1])){return true;}
+        if (board[0][2].equals(board[1][2])&&board[1][2].equals(board[2][2])){return true;}
+        if (board[0][3].equals(board[1][3])&&board[1][3].equals(board[2][3])){return true;}
+
+        if (board[0][0].equals(board[1][1])&&board[1][1].equals(board[2][2])){return true;}
+        if (board[0][2].equals(board[1][1])&&board[1][1].equals(board[2][0])){return true;}
+
         return false;
     }
 
-    public static boolean play(Character[][] board, int col, int row, int player)
+    public static boolean play(Character[][] board, int col, int row, Character player)
     {
+        if (!isWin(board)&&board[row][col]==' '){
+            board[row][col]=player;
+            return true;
+        }
         return false;
     }
 
     public static int[] bot(Character[][] board)
     {
-        return new int[]{1};
+        int x = (int) (Math.random() * 3);
+        int y = (int) (Math.random() * 3);
+        while (!isWin(board)&&board[y][x]!=' '){
+            x = (int) (Math.random() * 3);
+            y = (int) (Math.random() * 3);
+        }
+        return new int[]{x, y};
     }
 
 
