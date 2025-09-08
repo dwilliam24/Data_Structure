@@ -2,9 +2,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class TicTacToe {
+    static Character winner = ' ';
     public static void main(String[] args) {
         ArrayList<String> list = null;
         try {
@@ -23,40 +25,22 @@ public class TicTacToe {
         }
 
         Character[][] board = new Character[3][3];
-        if (list.isEmpty()){
+        if (list.isEmpty()||!list.get(0).contains("X")||list.get(1).contains("X")||list.get(2).contains("X")){
             board= new Character[][]{{' ', ' ', ' '}, {' ', ' ', ' '}, {' ', ' ', ' '}};
         }
-
         else {
             String[][] stringBoard = new String[3][3];
-            for (int x = 0; x < list.size(); x++) {
-                String[] fixed = new String[3];
-                if (list.get(x).split(",").length!=3) {
-                    System.out.println(list.get(x).split(",").length);
-                    for (int a = 0; a < list.get(x).split(",").length; a++) {
-                        fixed[a] = list.get(x).split(",")[a];
-                    }
-                    for (int a = list.get(x).split(",").length; a < 3; a++) {
-                        fixed[a] = " ";
-                    }
-                    stringBoard[x] = fixed;
-                }
+            for (int x = 0; x < 3; x++) {
+                    stringBoard[x] = list.get(x).split("\\.");
             }
-
-            for (int x = 0; x < stringBoard.length; x++) {
-                for (int y = 0; y < stringBoard[0].length; y++) {
-                if (stringBoard[y][x]==null){
-                    stringBoard[y][x]=" ";
-                }
-                }
-            }
-            for (int x = 0; x < stringBoard.length; x++) {
-                for (int y = 0; y < stringBoard[0].length; y++) {
-                    board[y][x] = stringBoard[y][x].charAt(0);
+            for (int x=0; x<3; x++){
+                for (int y=0; y<3; y++){
+                    board[x][y]=stringBoard[x][y].charAt(0);
                 }
             }
             System.out.println("Game save loaded.");
         }
+
         Scanner scanner = new Scanner(System.in);
         while(!isWin(board))
         {
@@ -120,19 +104,22 @@ public class TicTacToe {
             }
 
         }
-
-
+        if (isWin(board)) {
+            System.out.println(winner + " Wins!");
+            File file = new File("C:\\Users\\k2306075\\OneDrive - Katy Independent School District\\GitHub\\Data_Structure\\DS1\\TicTacToe.txt");
+            boolean u = file.delete();
+            System.out.println(u);
+        }
     }
-
-
+    
     public static void saveBoard(Character[][] board) {
         try{
             File fileRef = new File("C:\\Users\\k2306075\\OneDrive - Katy Independent School District\\GitHub\\Data_Structure\\DS1\\TicTacToe.txt");
             FileWriter fileWriter = new FileWriter(fileRef,false);
             PrintWriter printWriter = new PrintWriter(fileWriter);
-            printWriter.println(board[0][0]+","+board[0][1]+","+board[0][2]);
-            printWriter.println(board[1][0]+","+board[1][1]+","+board[1][2]);
-            printWriter.print(board[2][0]+","+board[2][1]+","+board[2][2]);
+            printWriter.println(board[0][0]+"."+board[0][1]+"."+board[0][2]);
+            printWriter.println(board[1][0]+"."+board[1][1]+"."+board[1][2]);
+            printWriter.print(board[2][0]+"."+board[2][1]+"."+board[2][2]);
             fileWriter.close();
             printWriter.close();
             System.out.println("Save Complete.");
@@ -145,16 +132,16 @@ public class TicTacToe {
     }
     public static boolean isWin(Character[][] board)
     {
-        if (board[0][0].equals(board[0][1])&&board[0][1].equals(board[0][2])&&board[0][0]!=' '){System.out.println(board[0][0]+" Wins!"); return true;}
-        if (board[1][0].equals(board[1][1])&&board[1][1].equals(board[1][2])&&board[1][0]!=' '){System.out.println(board[1][0]+" Wins!"); return true;}
-        if (board[2][0].equals(board[2][1])&&board[2][1].equals(board[2][2])&&board[2][0]!=' '){System.out.println(board[2][0]+" Wins!"); return true;}
+        if (board[0][0].equals(board[0][1])&&board[0][1].equals(board[0][2])&&board[0][0]!=' '){winner=board[0][0]; return true;}
+        if (board[1][0].equals(board[1][1])&&board[1][1].equals(board[1][2])&&board[1][0]!=' '){winner=board[1][0]; return true;}
+        if (board[2][0].equals(board[2][1])&&board[2][1].equals(board[2][2])&&board[2][0]!=' '){winner=board[2][0]; return true;}
 
-        if (board[0][0].equals(board[1][0])&&board[1][0].equals(board[2][0])&&board[0][0]!=' '){System.out.println(board[0][0]+" Wins!"); return true;}
-        if (board[0][1].equals(board[1][1])&&board[1][1].equals(board[2][1])&&board[0][1]!=' '){System.out.println(board[0][1]+" Wins!"); return true;}
-        if (board[0][2].equals(board[1][2])&&board[1][2].equals(board[2][2])&&board[0][2]!=' '){System.out.println(board[0][2]+" Wins!"); return true;}
+        if (board[0][0].equals(board[1][0])&&board[1][0].equals(board[2][0])&&board[0][0]!=' '){winner=board[0][0]; return true;}
+        if (board[0][1].equals(board[1][1])&&board[1][1].equals(board[2][1])&&board[0][1]!=' '){winner=board[0][1]; return true;}
+        if (board[0][2].equals(board[1][2])&&board[1][2].equals(board[2][2])&&board[0][2]!=' '){winner=board[0][2]; return true;}
 
-        if (board[0][0].equals(board[1][1])&&board[1][1].equals(board[2][2])&&board[0][0]!=' '){System.out.println(board[0][0]+" Wins!"); return true;}
-        if (board[0][2].equals(board[1][1])&&board[1][1].equals(board[2][0])&&board[0][2]!=' '){System.out.println(board[0][2]+" Wins!"); return true;}
+        if (board[0][0].equals(board[1][1])&&board[1][1].equals(board[2][2])&&board[0][0]!=' '){winner=board[0][0]; return true;}
+        if (board[0][2].equals(board[1][1])&&board[1][1].equals(board[2][0])&&board[0][2]!=' '){winner=board[0][2]; return true;}
 
         return false;
     }
