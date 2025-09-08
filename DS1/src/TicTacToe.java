@@ -2,15 +2,15 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class TicTacToe {
     static Character winner = ' ';
+    static String filePath ="C:\\Users\\k2306075\\OneDrive - Katy Independent School District\\GitHub\\Data_Structure\\DS1\\TicTacToe.txt";
     public static void main(String[] args) {
         ArrayList<String> list = null;
         try {
-            File fileRef = new File("C:\\Users\\k2306075\\OneDrive - Katy Independent School District\\GitHub\\Data_Structure\\DS1\\TicTacToe.txt");
+            File fileRef = new File(filePath);
             if (!fileRef.exists())
                 fileRef.createNewFile();
             Scanner scanner = new Scanner(fileRef);
@@ -19,6 +19,7 @@ public class TicTacToe {
             while (scanner.hasNextLine()) {
                 list.add(scanner.nextLine());
             }
+            scanner.close();
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e);
@@ -72,7 +73,8 @@ public class TicTacToe {
             }
 
             boolean x = play(board, xMove, yMove, 'X');
-            bot(board);
+            if (x)
+                bot(board);
 
             while (!x){
                 printBoard(board);
@@ -100,21 +102,20 @@ public class TicTacToe {
                     break;
                 }
                 x = play(board, xMove, yMove, 'X');
-                bot(board);
+                if (x)
+                    bot(board);
             }
-
         }
         if (isWin(board)) {
             System.out.println(winner + " Wins!");
-            File file = new File("C:\\Users\\k2306075\\OneDrive - Katy Independent School District\\GitHub\\Data_Structure\\DS1\\TicTacToe.txt");
-            boolean u = file.delete();
-            System.out.println(u);
+            File file = new File(filePath);
+            file.delete();
         }
     }
-    
+
     public static void saveBoard(Character[][] board) {
         try{
-            File fileRef = new File("C:\\Users\\k2306075\\OneDrive - Katy Independent School District\\GitHub\\Data_Structure\\DS1\\TicTacToe.txt");
+            File fileRef = new File(filePath);
             FileWriter fileWriter = new FileWriter(fileRef,false);
             PrintWriter printWriter = new PrintWriter(fileWriter);
             printWriter.println(board[0][0]+"."+board[0][1]+"."+board[0][2]);
@@ -130,6 +131,7 @@ public class TicTacToe {
             System.out.println(e);
         }
     }
+
     public static boolean isWin(Character[][] board)
     {
         if (board[0][0].equals(board[0][1])&&board[0][1].equals(board[0][2])&&board[0][0]!=' '){winner=board[0][0]; return true;}
