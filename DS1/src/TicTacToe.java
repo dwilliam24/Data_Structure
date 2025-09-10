@@ -26,7 +26,7 @@ public class TicTacToe {
         }
 
         Character[][] board = new Character[3][3];
-        if (list.isEmpty()||!list.get(0).contains("X")||list.get(1).contains("X")||list.get(2).contains("X")){
+        if (list.isEmpty()||(!list.get(0).contains("X")&&!list.get(1).contains("X")&&!list.get(2).contains("X"))){
             board= new Character[][]{{' ', ' ', ' '}, {' ', ' ', ' '}, {' ', ' ', ' '}};
         }
         else {
@@ -107,7 +107,7 @@ public class TicTacToe {
             }
         }
         if (isWin(board)) {
-            System.out.println(winner + " Wins!");
+            System.out.println(winner + " Wins!\n");
             File file = new File(filePath);
             file.delete();
         }
@@ -124,7 +124,7 @@ public class TicTacToe {
             fileWriter.close();
             printWriter.close();
             System.out.println("Save Complete.");
-            System.out.println("Good bye.");
+            System.out.println("Good bye.\n");
         }
         catch (Exception e) {
             e.printStackTrace();
