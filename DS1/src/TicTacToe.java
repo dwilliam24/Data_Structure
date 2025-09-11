@@ -43,7 +43,7 @@ public class TicTacToe {
         }
 
         Scanner scanner = new Scanner(System.in);
-        while(!isWin(board))
+        while(!isWin(board)&&!isCatsGame(board))
         {
             printBoard(board);
             System.out.println("Entering a 3 for the column or row will save the game.");
@@ -73,9 +73,10 @@ public class TicTacToe {
             }
 
             boolean x = play(board, xMove, yMove, 'X');
-            if (x)
-                bot(board);
-
+            if (!isCatsGame(board)) {
+                if (x)
+                    bot(board);
+            }
             while (!x){
                 printBoard(board);
                 System.out.println("Entering a 3 for the column or row will save the game.");
@@ -102,12 +103,19 @@ public class TicTacToe {
                     break;
                 }
                 x = play(board, xMove, yMove, 'X');
-                if (x)
-                    bot(board);
+                if (!isCatsGame(board)) {
+                    if (x)
+                        bot(board);
+                }
             }
         }
         if (isWin(board)) {
             System.out.println(winner + " Wins!\n");
+            File file = new File(filePath);
+            file.delete();
+        }
+        else if(isCatsGame(board)){
+            System.out.println("Cats Game");
             File file = new File(filePath);
             file.delete();
         }
@@ -146,6 +154,15 @@ public class TicTacToe {
         if (board[0][2].equals(board[1][1])&&board[1][1].equals(board[2][0])&&board[0][2]!=' '){winner=board[0][2]; return true;}
 
         return false;
+    }
+
+    public static boolean isCatsGame(Character[][] board){
+        for (int x=0;x<board.length; x++){
+            for (int y=0; y<board[0].length; y++){
+                if (board[x][y]==' ') return false;
+            }
+        }
+        return true;
     }
 
     public static boolean play(Character[][] board, int col, int row, Character player)
