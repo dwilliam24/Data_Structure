@@ -71,11 +71,10 @@ public class TicTacToe {
                 saveBoard(board);
                 break;
             }
-
             boolean x = play(board, xMove, yMove, 'X');
             if (!isCatsGame(board)) {
-                if (x)
-                    bot(board);
+                if (x) bot(board);
+                else System.out.println("\nInvalid Move.");
             }
             while (!x){
                 printBoard(board);
@@ -106,8 +105,10 @@ public class TicTacToe {
                 if (!isCatsGame(board)) {
                     if (x)
                         bot(board);
+                    else System.out.println("Invalid Move.");
                 }
             }
+            if (yMove==3||xMove==3) break;
         }
         if (isWin(board)) {
             System.out.println(winner + " Wins!\n");
@@ -115,7 +116,7 @@ public class TicTacToe {
             file.delete();
         }
         else if(isCatsGame(board)){
-            System.out.println("Cats Game");
+            System.out.println("\nCat's Game");
             File file = new File(filePath);
             file.delete();
         }
