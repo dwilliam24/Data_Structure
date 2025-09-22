@@ -12,12 +12,14 @@ public class MyStack<E> implements StackInterface<E>{
     }
     @Override
     public E peek() {
-        return data.getLast();
+        if (data.isEmpty()) return null;
+        return data.get(size()-1);
     }
 
     @Override
     public E pop() {
-        return data.removeLast();
+        if (data.isEmpty()) return null;
+        return data.remove(size()-1);
     }
 
     @Override
