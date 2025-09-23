@@ -8,14 +8,14 @@ public class DS2_Infix_Postfix_Calculator {
     public static String infixToPostfix(String infix){
         MyStack<String> stack = new MyStack();
         String postfix ="";
-
-        for (int i =0; i<infix.length(); i++){
-            String a = infix.charAt(i)+"";
+        String[] split = infix.split(" ");
+        for (int i =0; i< split.length; i++){
+            String a = split[i];
             if ("+-*/^".contains(a)){
                 stack.push(a);
             }
             if (!"+-*/^()".contains(a)) {
-                postfix+=a;
+                postfix+=a+" ";
 
             }
             if ("(".contains(a)) {
@@ -27,12 +27,12 @@ public class DS2_Infix_Postfix_Calculator {
                 {
                     String f = stack.pop();
                     if (!("(".equals(f))){
-                        postfix+=f;
+                        postfix+=f+" ";
                     }
                     g=false;
                 }
             }
-        //   ( 10 - 2.5 ) / ( 3 + 1.5 ^ 2 )
+        //   ( 2.5 + 1.5 ) ^ 2 - 10 / ( 4 ^ 2.0 ) + 7 * 0.3
 
 
             System.out.println(i);
@@ -48,10 +48,12 @@ public class DS2_Infix_Postfix_Calculator {
             String a = stack.pop();
             if(!"()".contains(a))
             {
-                postfix+=" "+a;
+                postfix+=a+" ";
             }
         }
-        return postfix;
+        String fix = postfix;
+        if (" ".contains(postfix.charAt(postfix.length()-1)+"")) fix=postfix.substring(0,postfix.length()-1);
+        return fix;
     }
 
 }
