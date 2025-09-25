@@ -11,28 +11,37 @@ public class DS2_Infix_Postfix_Calculator {
         String[] split = infix.split(" ");
         for (int i =0; i< split.length; i++){
             String a = split[i];
+
             if ("+-*/^".contains(a)){
-                stack.push(a);
+                if (!stack.isEmpty()&&!"(".contains(stack.peek())&&(("^".contains(stack.peek())&&"^*/+-".contains(a)) || ("*/".contains(stack.peek())&&"*/+-".contains(a))))
+                {
+                    postfix += stack.pop()+" ";
+                    stack.push(a);
+                }
+                else stack.push(a);
             }
-            if (!"+-*/^()".contains(a)) {
+            else if (!"+-*/^()".contains(a)) {
                 postfix+=a+" ";
 
             }
-            if ("(".contains(a)) {
+            else if ("(".contains(a)) {
                 stack.push("(");
             }
-            if (")".contains(a)){
+            else if (")".contains(a)){
                 boolean g=true;
                 while (g)
                 {
                     String f = stack.pop();
-                    if (!("(".equals(f))){
+                    if (!("(".contains(f))){
                         postfix+=f+" ";
                     }
                     g=false;
                 }
+                stack.pop();
+                System.out.println("\n"+stack+"\n");
             }
-        //   ( 2.5 + 1.5 ) ^ 2 - 10 / ( 4 ^ 2.0 ) + 7 * 0.3
+
+        //  2 ( 10 - 2.5 ) / ( 3 + 1.5 ^ 2 )
 
 
             System.out.println(i);
