@@ -13,7 +13,6 @@ public class DS2_Infix_Postfix_Calculator {
     }
 
     public static String infixToPostfix(String infix){
-        Stack<String> stack2 = new Stack<>();
         MyStack<String> stack = new MyStack();
         String postfix ="";
         String[] split = infix.split(" ");
