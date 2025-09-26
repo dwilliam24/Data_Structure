@@ -3,7 +3,6 @@ import java.util.Scanner;
 import java.util.Stack;
 
 public class DS2_Infix_Postfix_Calculator {
-
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter an equation in infix form (separating values and operators with spaces): ");
@@ -12,6 +11,7 @@ public class DS2_Infix_Postfix_Calculator {
         System.out.println("Postfix Form: "+ postfix);
         System.out.printf("Result: %.2f", solvePostfix(postfix));
     }
+
     public static String infixToPostfix(String infix){
         Stack<String> stack2 = new Stack<>();
         MyStack<String> stack = new MyStack();
@@ -22,11 +22,9 @@ public class DS2_Infix_Postfix_Calculator {
 
             if ("+-*/^".contains(a)){
                 boolean p = false;
-                if (!stack.isEmpty()&&!"(".contains(stack.peek())&&(("^".contains(stack.peek())&&"^*/+-".contains(a)) || ("*/".contains(stack.peek())&&"*/+-".contains(a)) || ("+-".contains(stack.peek())&&"+-".contains(a))))
-                {
+                if (!stack.isEmpty()&&!"(".contains(stack.peek())&&(("^".contains(stack.peek())&&"^*/+-".contains(a)) || ("*/".contains(stack.peek())&&"*/+-".contains(a)) || ("+-".contains(stack.peek())&&"+-".contains(a)))) {
                     postfix += stack.pop()+" ";
-                    if (!stack.isEmpty()&&!"(".contains(stack.peek())&&(("^".contains(stack.peek())&&"^*/+-".contains(a)) || ("*/".contains(stack.peek())&&"*/+-".contains(a)) || ("+-".contains(stack.peek())&&"+-".contains(a))))
-                    {
+                    if (!stack.isEmpty()&&!"(".contains(stack.peek())&&(("^".contains(stack.peek())&&"^*/+-".contains(a)) || ("*/".contains(stack.peek())&&"*/+-".contains(a)) || ("+-".contains(stack.peek())&&"+-".contains(a)))) {
                         postfix += stack.pop()+" ";
                         stack.push(a);
                         p=true;
@@ -44,8 +42,7 @@ public class DS2_Infix_Postfix_Calculator {
             }
             else if (")".contains(a)){
                 boolean g=true;
-                while (g)
-                {
+                while (g) {
                     String f = stack.pop();
                     if (!("(".contains(f))){
                         postfix+=f+" ";
@@ -55,12 +52,10 @@ public class DS2_Infix_Postfix_Calculator {
                 }
             }
         }
-        while (!stack.isEmpty())
-        {
+        while (!stack.isEmpty()) {
 
             String a = stack.pop();
-            if(!"()".contains(a))
-            {
+            if(!"()".contains(a)) {
                 postfix+=a+" ";
             }
         }
@@ -68,13 +63,13 @@ public class DS2_Infix_Postfix_Calculator {
         if (" ".contains(postfix.charAt(postfix.length()-1)+"")) fix=postfix.substring(0,postfix.length()-1);
         return fix;
     }
+
     public static double solvePostfix(String postfix){
         MyStack<Double> stack = new MyStack<>();
         String[] split = postfix.split(" ");
         for (int i =0; i< split.length; i++){
             String a = split[i];
-            if ("^*/+-".contains(a))
-            {
+            if ("^*/+-".contains(a)) {
                 double temp1 = stack.pop();
                 double temp2 = stack.pop();
                 if (a.equals("^")) stack.push(Math.pow(temp2,temp1));
@@ -82,8 +77,7 @@ public class DS2_Infix_Postfix_Calculator {
                 else if (a.equals("/")) stack.push(temp2/temp1);
                 else if (a.equals("+")) stack.push(temp2+temp1);
                 else if (a.equals("-")) stack.push(temp2-temp1);
-            } else if (!"^*/+-".contains(a))
-            {
+            } else if (!"^*/+-".contains(a)) {
                 stack.push(Double.parseDouble(a));
             }
         }
