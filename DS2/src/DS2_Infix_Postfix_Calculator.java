@@ -13,10 +13,17 @@ public class DS2_Infix_Postfix_Calculator {
             String a = split[i];
 
             if ("+-*/^".contains(a)){
-                if (!stack.isEmpty()&&!"(".contains(stack.peek())&&(("^".contains(stack.peek())&&"^*/+-".contains(a)) || ("*/".contains(stack.peek())&&"*/+-".contains(a))))
+                boolean p = false;
+                if (!stack.isEmpty()&&!"(".contains(stack.peek())&&(("^".contains(stack.peek())&&"^*/+-".contains(a)) || ("*/".contains(stack.peek())&&"*/+-".contains(a)) || ("+-".contains(stack.peek())&&"+-".contains(a))))
                 {
                     postfix += stack.pop()+" ";
-                    stack.push(a);
+                    if (!stack.isEmpty()&&!"(".contains(stack.peek())&&(("^".contains(stack.peek())&&"^*/+-".contains(a)) || ("*/".contains(stack.peek())&&"*/+-".contains(a)) || ("+-".contains(stack.peek())&&"+-".contains(a))))
+                    {
+                        postfix += stack.pop()+" ";
+                        stack.push(a);
+                        p=true;
+                    }
+                    if(!p)stack.push(a);
                 }
                 else stack.push(a);
             }
@@ -34,14 +41,14 @@ public class DS2_Infix_Postfix_Calculator {
                     String f = stack.pop();
                     if (!("(".contains(f))){
                         postfix+=f+" ";
+
                     }
-                    g=false;
+                    else g=false;
                 }
-                stack.pop();
                 System.out.println("\n"+stack+"\n");
             }
 
-        //  2 ( 10 - 2.5 ) / ( 3 + 1.5 ^ 2 )
+        //  5 ( 2.5 + 1.5 ) ^ 2 - 10 / ( 4 ^ 2.0 ) + 7 * 0.3
 
 
             System.out.println(i);
