@@ -14,11 +14,13 @@ public class MyQueue<E> implements QueueInterface<E>{
 
     @Override
     public E element() {
+        if (data.isEmpty()) return null;
         return data.getFirst();
     }
 
     @Override
     public E poll() {
+        if (data.isEmpty()) return null;
         return data.remove(0);
     }
 

@@ -1,7 +1,4 @@
-import java.util.Queue;
 import java.util.Scanner;
-import java.util.Stack;
-
 public class DS2_Infix_Postfix_Calculator {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
