@@ -4,7 +4,7 @@ public class MapMain
 {
     public static void main(String[]args)
     {
-        /*Scanner keyboard= new Scanner(System.in);
+        Scanner keyboard= new Scanner(System.in);
 
         int choice;
         DS3_Map<Integer,String> map= new DS3_Map<Integer,String>();
@@ -86,7 +86,5 @@ public class MapMain
         }while(true);
 
         System.out.println("\n\nGood Bye");
-
-         */
     }
 }
