@@ -29,38 +29,44 @@ public class DS3_SetJoins {
          }
          System.out.print("Set A: ");
          Iterator<Integer> iterator1 = set1.iterator();
-         int[] array1 = new int[set1.size()];
+         ArrayList<Integer> array1 = new ArrayList<>();
          for(int i=0; i<set1.size();i++) {
-             array1[i]=iterator1.next();
+             array1.add(iterator1.next());
 
          }
-         System.out.println(Arrays.toString(array1));
+         System.out.println(array1);
          System.out.print("Set B: ");
          Iterator<Integer> iterator2 = set2.iterator();
-         int[] array2 = new int[set2.size()];
+         ArrayList<Integer> array2 = new ArrayList<>();
          for(int i=0; i<set2.size();i++) {
-             array2[i]=iterator2.next();
+             array2.add(iterator2.next());
 
          }
-         System.out.println(Arrays.toString(array2));
+         System.out.println(array2);
 
          ArrayList<Integer> union = new ArrayList<>();
          ArrayList<Integer> overlap = new ArrayList<>();
          ArrayList<Integer> A = new ArrayList<>();
          ArrayList<Integer> B = new ArrayList<>();
-         for (int i = 0; i < array1.length; i++) {
-             union.add(array1[i]);
-             if ()
+         for (int i = 0; i < array1.size(); i++) {
+             union.add(array1.get(i));
          }
-         for (int i = 0; i < array2.length; i++) {
-             if(!union.contains(array2[i]))union.add(array2[i]);
-             else overlap.add(array2[i]);
+         for (int i = 0; i < array2.size(); i++) {
+             if(!union.contains(array2.get(i)))union.add(array2.get(i));
+             else overlap.add(array2.get(i));
          }
+         for (int i = 0; i < array1.size(); i++) {
+             if (!array2.contains(array1.get(i))) A.add(array1.get(i));
+         }
+         for (int i = 0; i < array2.size(); i++) {
+             if(!array1.contains(array2.get(i))) B.add(array2.get(i));
+         }
+
          Collections.sort(union);
          System.out.println("\nUnion: "+union);
          System.out.println("Intersection: "+overlap);
-         System.out.println("A - B (Elements in A not in B): ");
-
+         System.out.println("A - B (Elements in A not in B): "+A);
+         System.out.println("B - A (Elements in B not in A): "+ B);
 
      }
 
