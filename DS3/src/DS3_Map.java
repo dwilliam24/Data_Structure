@@ -21,7 +21,7 @@ public class DS3_Map<K,V> implements MapInterface<K,V>{
     @Override
     public boolean containsKey(K key) {
         for (int i = 0; i < data.size(); i++) {
-            if (data.get(i).getKey()==key) return true;
+            if (data.get(i).getKey().equals(key)) return true;
         }
         return false;
     }
@@ -46,7 +46,7 @@ public class DS3_Map<K,V> implements MapInterface<K,V>{
     @Override
     public V get(K o) {
         for (int i = 0; i < data.size(); i++) {
-            if (data.get(i).getKey()==o) return (V) data.get(i).getValue();
+            if (data.get(i).getKey().equals(o)) return (V) data.get(i).getValue();
         }
         return null;
     }
@@ -60,7 +60,7 @@ public class DS3_Map<K,V> implements MapInterface<K,V>{
     public V put(K key, V value) {
         MapEnt a = new MapEnt(key, value);
         for (int i = 0; i < data.size(); i++) {
-            if (data.get(i).getKey()==key)
+            if (data.get(i).getKey().equals(key))
             {
                 V g = (V) data.remove(i).getValue();
                 data.add(a);
@@ -97,7 +97,7 @@ public class DS3_Map<K,V> implements MapInterface<K,V>{
     @Override
     public V remove(K key) {
         for (int i = 0; i < data.size(); i++) {
-            if (data.get(i).getKey()==key)
+            if (data.get(i).getKey().equals(key))
             {
                 return (V) data.remove(i).getValue();
             }

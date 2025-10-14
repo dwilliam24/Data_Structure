@@ -30,13 +30,12 @@ public class DS3_UniqueWords {
 
         for (int i = 0; i < word.size(); i++) {
             word.set(i,word.get(i).toLowerCase());
-            for (int j = 0; j < word.get(i).length(); j++) {
+            for (int j = word.get(i).length()-1; j >= 0; j--) {
                 if (".,-!_–?~’;:\"()".contains(word.get(i).charAt(j)+""))
                 {
                     String t = "";
                     if (j==0) t= word.get(i).substring(j+1);
                     else if (j==word.get(i).length()-1) t=word.get(i).substring(0,j);
-                    else if (word.get(i).charAt(j))
                     else t = word.get(i).substring(0,j)+word.get(i).substring(j+1);
                     word.set(i,t);
                 }
