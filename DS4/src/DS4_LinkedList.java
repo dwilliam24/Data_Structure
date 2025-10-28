@@ -119,7 +119,7 @@ public class DS4_LinkedList<E> implements  DS4_LinkedList_Interface<E>{
         if (x == 0) {
             addFirst(data);
         }
-        else if (x==size()-1||(x==1&&size()==1)){
+        else if (x==size()){
             addLast(data);
         }
         else if (!(x>size())) {
