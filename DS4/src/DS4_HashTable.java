@@ -1,12 +1,21 @@
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class DS4_HashTable<K,V> implements DS4_HashTable_Interface<K,V> {
-
-    public DS4_HashTable(K bucketCapacity, K loadFactor, K tableSize)
+    private ArrayList<ArrayList<DS4_Entry<K,V>>> Hashtable;
+    public DS4_HashTable(int bucketCapacity, int loadFactor, int tableSize)
     {
+        Hashtable = new ArrayList<>(tableSize);
+        for (int i = 0; i < tableSize; i++) {
+
+        }
 
     }
 
+
+    private int hash(K key){
+        return 0;
+    }
 
     @Override
     public void clear() {
@@ -24,17 +33,17 @@ public class DS4_HashTable<K,V> implements DS4_HashTable_Interface<K,V> {
     }
 
     @Override
-    public boolean contains(Object key) {
+    public boolean contains(K key) {
         return false;
     }
 
     @Override
-    public Object insert(Object key, Object value) {
+    public V insert(K key, V value) {
         return null;
     }
 
     @Override
-    public Object remove(Object key) {
+    public V remove(K key) {
         return null;
     }
     public int tableSize(){
@@ -42,6 +51,6 @@ public class DS4_HashTable<K,V> implements DS4_HashTable_Interface<K,V> {
     }
     public Iterator<K> iterator()
     {
-        return null;
+       return null;
     }
 }
