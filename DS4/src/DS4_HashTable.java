@@ -4,17 +4,19 @@ import java.util.Iterator;
 public class DS4_HashTable<K,V> implements DS4_HashTable_Interface<K,V> {
     private ArrayList<ArrayList<DS4_Entry<K,V>>> table;
     private int loadFactor;
+    private int tableSize;
+    private int bucketCapacity;
     private int tombStones;
     public DS4_HashTable(int bucketCapacity, int loadFactor, int tableSize)
     {
         table = new ArrayList<>();
         this.loadFactor=loadFactor;
+        this.bucketCapacity=bucketCapacity;
+        this.tableSize=tableSize;
         for (int i = 0; i < tableSize; i++) {
-            table.add(i, new ArrayList<>(bucketCapacity));
-            for (int j = 0; j < table.get(i).size(); j++) {
-                table.get(i).set(j,null);
-            }
+            table.add(i, new ArrayList<>());
         }
+        //empty hashtables have nothiung and nulls are tombstones :(
     }
 
 
@@ -25,6 +27,7 @@ public class DS4_HashTable<K,V> implements DS4_HashTable_Interface<K,V> {
                 table.get(i).set(j, null);
             }
         }
+        tombStones=0;
     }
 
     @Override
@@ -49,7 +52,7 @@ public class DS4_HashTable<K,V> implements DS4_HashTable_Interface<K,V> {
     public boolean contains(K key) {
         for (int i = 0; i < table.size(); i++) {
             for (int j = 0; j < table.get(i).size(); j++) {
-                if (table.get(i).get(j).equals(key)){
+                if (table.get(i).get(j)!=null&&table.get(i).get(j).key.equals(key)){
                     return true;
                 }
             }
@@ -59,20 +62,35 @@ public class DS4_HashTable<K,V> implements DS4_HashTable_Interface<K,V> {
 
     @Override
     public V insert(K key, V value) {
-            for (int i = 0; i < table.get(hash(key)).size(); i++) {
-                if (table.get(hash(key)).get(i).key.equals(key)){
-                    V temp = table.get(hash(key)).get(i).value;
-                    table.get(hash(key)).set(i,new DS4_Entry<>(key, value));
+        int loc = hash(key);
+            for (int i = 0; i < table.get(loc).size(); i++) {
+                if (table.get(loc).get(i)!=null&&table.get(loc).get(i).key.equals(key)){
+                    V temp = table.get(loc).get(i).value;
+                    table.get(loc).set(i,new DS4_Entry<>(key, value));
 
                     return temp;
                 }
-                else if (table.get(hash(key)).get(i)==null){
-                    V temp = table.get(hash(key)).get(i).value;
-                    table.get(hash(key)).set(i, new DS4_Entry<>(key,value));
-                    return temp;
+                else if (table.get(loc).get(i)==null){
+                    table.get(loc).set(i, new DS4_Entry<>(key,value));
+                    return null;
                 }
             }
-            rebuild();
+            if (!table.get(loc).contains(null)){
+                for (int j = loc; j < tableSize()+loc; j++) {
+                    for (int i = 0; i < table.get(j%tableSize).size(); i++) {
+                        if (table.get(j%tableSize).get(i)==null){
+                            table.get(j%tableSize).set(i, new DS4_Entry<>(key,value));
+                            return null;
+                        }
+                        else if (table.get(j%tableSize).get(i).key.equals(key)){
+                            V temp = table.get(j%tableSize).get(i).value;
+                            table.get(j%tableSize).set(i,new DS4_Entry<>(key,value));
+                            return temp;
+                        }
+                    }
+                }
+            }
+        rebuild();
         return null;
     }
 
@@ -107,10 +125,8 @@ public class DS4_HashTable<K,V> implements DS4_HashTable_Interface<K,V> {
     private void rebuild(){
         ArrayList<ArrayList<DS4_Entry<K,V>>> temp = new ArrayList<>();
         for (int i = 0; i < tableSize()*2; i++) {
-
             temp.add(new ArrayList<>());
-
-            for (int j = 0; j < table.get(0).size(); j++) {
+            for (int j = 0; j < bucketCapacity; j++) {
                 if(i<tableSize()){
                     temp.get(i).add(table.get(i).get(j));
                 }
@@ -120,4 +136,5 @@ public class DS4_HashTable<K,V> implements DS4_HashTable_Interface<K,V> {
         table=temp;
         loadFactor=loadFactor*2;
     }
+    public void print(){System.out.println(table);}
 }
