@@ -15,7 +15,6 @@ public class DS4_HashTable<K,V> implements DS4_HashTable_Interface<K,V> {
         this.tableSize=tableSize;
         for (int i = 0; i < tableSize; i++) {
             table.add(i, new ArrayList<>());
-
         }
     }
 
@@ -68,7 +67,6 @@ public class DS4_HashTable<K,V> implements DS4_HashTable_Interface<K,V> {
                     table.get(j%tableSize()).set(i,new DS4_Entry<>(key, value));
                     return temp;
                 }
-
             }
             for (int i = 0; i < table.get(j%tableSize()).size(); i++) {
                     if (table.get(j%tableSize()).get(i)==null){
@@ -78,7 +76,6 @@ public class DS4_HashTable<K,V> implements DS4_HashTable_Interface<K,V> {
             }
             if (table.get(j%tableSize()).size()<bucketCapacity){
                 table.get(j%tableSize()).add(new DS4_Entry<>(key,value));
-
                 int tracker=0;
                 Iterator<K> iterator = iterator();
                 while (iterator.hasNext()){
@@ -88,10 +85,7 @@ public class DS4_HashTable<K,V> implements DS4_HashTable_Interface<K,V> {
                 if (tracker>=loadFactor) {
                     rebuild();
                 }
-
                 return null;
-
-
             }
         }
         int tracker=0;
@@ -171,8 +165,7 @@ public class DS4_HashTable<K,V> implements DS4_HashTable_Interface<K,V> {
                 }
             }
         }
-
         table=newTable;
-
     }
 }
+//     (^._.^)ﾉ
