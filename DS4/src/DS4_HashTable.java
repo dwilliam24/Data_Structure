@@ -1,18 +1,18 @@
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class DS4_HashTable<K,V> implements DS4_HashTable_Interface<K,V> {
-    private ArrayList<ArrayList<DS4_Entry<K,V>>> table;
+public class DS4_HashTable<K, V> implements DS4_HashTable_Interface<K, V> {
+    private ArrayList<ArrayList<DS4_Entry<K, V>>> table;
     private int loadFactor;
     private int tableSize;
     private int bucketCapacity;
     private int tombStones;
-    public DS4_HashTable(int bucketCapacity, int loadFactor, int tableSize)
-    {
+
+    public DS4_HashTable(int bucketCapacity, int loadFactor, int tableSize) {
         table = new ArrayList<>();
-        this.loadFactor=loadFactor;
-        this.bucketCapacity=bucketCapacity;
-        this.tableSize=tableSize;
+        this.loadFactor = loadFactor;
+        this.bucketCapacity = bucketCapacity;
+        this.tableSize = tableSize;
         for (int i = 0; i < tableSize; i++) {
             table.add(i, new ArrayList<>());
         }
@@ -24,15 +24,15 @@ public class DS4_HashTable<K,V> implements DS4_HashTable_Interface<K,V> {
         for (int i = 0; i < table.size(); i++) {
             table.get(i).clear();
         }
-        tombStones=0;
+        tombStones = 0;
     }
 
     @Override
     public int size() {
-        int size =0;
+        int size = 0;
         for (int i = 0; i < table.size(); i++) {
             for (int j = 0; j < table.get(i).size(); j++) {
-                if (table.get(i).get(j) != null){
+                if (table.get(i).get(j) != null) {
                     size++;
                 }
             }
@@ -49,7 +49,7 @@ public class DS4_HashTable<K,V> implements DS4_HashTable_Interface<K,V> {
     public boolean contains(K key) {
         for (int i = 0; i < table.size(); i++) {
             for (int j = 0; j < table.get(i).size(); j++) {
-                if (table.get(i).get(j)!=null&&table.get(i).get(j).key.equals(key)){
+                if (table.get(i).get(j) != null && table.get(i).get(j).key.equals(key)) {
                     return true;
                 }
             }
@@ -60,41 +60,35 @@ public class DS4_HashTable<K,V> implements DS4_HashTable_Interface<K,V> {
     @Override
     public V insert(K key, V value) {
         int loc = hash(key);
-        for (int j = loc; j <tableSize()+loc; j++) {
-            for (int i = 0; i < table.get(j%tableSize()).size(); i++) {
-                if (table.get(j%tableSize()).get(i)!=null&&table.get(j%tableSize()).get(i).key.equals(key)){
-                    V temp = table.get(j%tableSize()).get(i).value;
-                    table.get(j%tableSize()).set(i,new DS4_Entry<>(key, value));
+        for (int j = loc; j < tableSize() + loc; j++) {
+            for (int i = 0; i < table.get(j % tableSize()).size(); i++) {
+                if (table.get(j % tableSize()).get(i) != null && table.get(j % tableSize()).get(i).key.equals(key)) {
+                    V temp = table.get(j % tableSize()).get(i).value;
+                    table.get(j % tableSize()).set(i, new DS4_Entry<>(key, value));
                     return temp;
                 }
             }
-            for (int i = 0; i < table.get(j%tableSize()).size(); i++) {
-                    if (table.get(j%tableSize()).get(i)==null){
-                    table.get(j%tableSize()).set(i,new DS4_Entry<>(key, value));
-                    return null;
-                }
-            }
-            if (table.get(j%tableSize()).size()<bucketCapacity){
-                table.get(j%tableSize()).add(new DS4_Entry<>(key,value));
-                int tracker=0;
+            if (table.get(j % tableSize()).size() < bucketCapacity) {
+                table.get(j % tableSize()).add(new DS4_Entry<>(key, value));
+                int tracker = 0;
                 Iterator<K> iterator = iterator();
-                while (iterator.hasNext()){
+                while (iterator.hasNext()) {
                     tracker++;
                     iterator.next();
                 }
-                if (tracker>=loadFactor) {
+                if (tracker >= loadFactor) {
                     rebuild();
                 }
                 return null;
             }
         }
-        int tracker=0;
+        int tracker = 0;
         Iterator<K> iterator = iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             tracker++;
             iterator.next();
         }
-        if (tracker>=loadFactor) {
+        if (tracker >= loadFactor) {
             rebuild();
         }
         return null;
@@ -103,11 +97,11 @@ public class DS4_HashTable<K,V> implements DS4_HashTable_Interface<K,V> {
     @Override
     public V remove(K key) {
         int loc = hash(key);
-        for (int j = loc; j <tableSize()+loc; j++) {
-            for (int i = 0; i < table.get(j%tableSize()).size(); i++) {
-                if (table.get(j%tableSize()).get(i)!=null&&table.get(j%tableSize()).get(i).key.equals(key)) {
-                    V temp = table.get(j%tableSize()).get(i).value;
-                    table.get(j%tableSize()).set(i, null);
+        for (int j = loc; j < tableSize() + loc; j++) {
+            for (int i = 0; i < table.get(j % tableSize()).size(); i++) {
+                if (table.get(j % tableSize()).get(i) != null && table.get(j % tableSize()).get(i).key.equals(key)) {
+                    V temp = table.get(j % tableSize()).get(i).value;
+                    table.get(j % tableSize()).set(i, null);
                     tombStones++;
                     return temp;
                 }
@@ -115,7 +109,8 @@ public class DS4_HashTable<K,V> implements DS4_HashTable_Interface<K,V> {
         }
         return null;
     }
-    public int tableSize(){
+
+    public int tableSize() {
         return table.size();
     }
 
@@ -123,49 +118,47 @@ public class DS4_HashTable<K,V> implements DS4_HashTable_Interface<K,V> {
         ArrayList<K> keys = new ArrayList<>();
         for (int i = 0; i < tableSize(); i++) {
             for (int j = 0; j < table.get(i).size(); j++) {
-                    if (table.get(i).get(j)==null){
-                        keys.add(null);
-                    }
-                    else keys.add(table.get(i).get(j).key);
+                if (table.get(i).get(j) == null) {
+                    keys.add(null);
+                } else keys.add(table.get(i).get(j).key);
             }
         }
-        Iterator<K> iterator = keys.iterator();
-        return iterator;
+        return keys.iterator();
     }
 
-    private int hash(K key){
-        return key.hashCode()%tableSize;
+    private int hash(K key) {
+        return key.hashCode() % tableSize;
     }
-    private void rebuild(){
-        loadFactor=loadFactor*2;
-        tombStones=0;
-        tableSize*=2;
-        ArrayList<DS4_Entry> temp = new ArrayList<>();
-        ArrayList<ArrayList<DS4_Entry<K,V>>> newTable = new ArrayList<>();
+
+    private void rebuild() {
+        loadFactor = loadFactor * 2;
+        tombStones = 0;
+        tableSize *= 2;
+        ArrayList<DS4_Entry<K, V>> temp = new ArrayList<>();
+        ArrayList<ArrayList<DS4_Entry<K, V>>> newTable = new ArrayList<>();
 
         for (int i = 0; i < table.size(); i++) {
             for (int j = 0; j < table.get(i).size(); j++) {
-                if (table.get(i).get(j)!=null)
-                    temp.add(table.get(i).get(j));
+                if (table.get(i).get(j) != null) temp.add(table.get(i).get(j));
             }
         }
-        for (int i = 0; i < table.size()*2; i++) {
+        for (int i = 0; i < table.size() * 2; i++) {
             newTable.add(new ArrayList<>());
         }
 
         for (int n = 0; n < temp.size(); n++) {
-            K key = (K) temp.get(n).key;
-            V value = (V) temp.get(n).value;
+            K key = temp.get(n).key;
+            V value = temp.get(n).value;
 
-            int loc = key.hashCode()% newTable.size();
-            for (int j = loc; j <newTable.size()+loc; j++) {
-                if (newTable.get(j%tableSize()).size()<bucketCapacity){
-                    newTable.get(j%tableSize()).add(new DS4_Entry<>(key,value));
+            int loc = key.hashCode() % newTable.size();
+            for (int j = loc; j < newTable.size() + loc; j++) {
+                if (newTable.get(j % tableSize()).size() < bucketCapacity) {
+                    newTable.get(j % tableSize()).add(new DS4_Entry<>(key, value));
                     break;
                 }
             }
         }
-        table=newTable;
+        table = newTable;
     }
 }
 //     (^._.^)ﾉ
