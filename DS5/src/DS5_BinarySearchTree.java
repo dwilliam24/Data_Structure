@@ -1,3 +1,5 @@
+
+
 public class DS5_BinarySearchTree<E extends Comparable<E>> implements DS5_BinarySearchTree_Interface<E> {
 
     private DS5_BinarySearchTree_Node<E> root;
@@ -35,12 +37,12 @@ public class DS5_BinarySearchTree<E extends Comparable<E>> implements DS5_Binary
 
     @Override
     public String inOrder() {
-        return "";
+        return "[]";
     }
 
     @Override
     public String postOrder() {
-        return "";
+        return "[]";
     }
 
     @Override
@@ -65,6 +67,9 @@ public class DS5_BinarySearchTree<E extends Comparable<E>> implements DS5_Binary
 
     @Override
     public int maxDepth() {
+        if (root==null){
+            return -1;
+        }
         return 0;
     }
 
@@ -75,6 +80,13 @@ public class DS5_BinarySearchTree<E extends Comparable<E>> implements DS5_Binary
 
     @Override
     public int size() {
+        /*
+        String a = preOrder();
+        a=a.substring(1,a.length()-1);
+        String[] f =a.split(", ");
+        System.out.println(Arrays.toString(f));
+        return f.length;
+        */
         return 0;
     }
 
@@ -85,36 +97,57 @@ public class DS5_BinarySearchTree<E extends Comparable<E>> implements DS5_Binary
 
     @Override
     public boolean contains(Comparable data) {
-        return false;
+        if (root==null) return false;
+        return ContainsHelper(root,data);
+    }
+    private boolean ContainsHelper(DS5_BinarySearchTree_Node<E> temp, Comparable data)
+    {
+        if(temp==null) {
+            return false;
+        }
+        if (temp.getData().equals(data))
+        {
+            return true;
+        }
+        else {
+            return ContainsHelper(temp.getLeft(), data)||ContainsHelper(temp.getRight(), data);
+        }
+
+
     }
 
     @Override
     public boolean insert(Comparable data) {
+        if (contains(data)){return false;}
         if (root==null){
             root = new DS5_BinarySearchTree_Node<E>((E) data);
             return true;
         }
-        else if(root.getLeft()==null&&data.compareTo(root.getData())>0){
-            root.setRight(new DS5_BinarySearchTree_Node<E>((E) data));
-            return true;
-        }
-        else if(root.getLeft()==null&&data.compareTo(root.getData())<0){
-            root.setLeft(new DS5_BinarySearchTree_Node<E>((E) data));
-            return true;
-        }
-        //insert(data);
-
-        return false;
+        return insertHelper(root,data);
     }
-    private DS5_BinarySearchTree_Node<E> insertHelper(DS5_BinarySearchTree_Node<E> temp, Comparable data)
+    private Boolean insertHelper(DS5_BinarySearchTree_Node<E> temp, Comparable data)
     {
-        if (temp.getLeft()!=null){
-            insertHelper(temp,data);
+        if (data.compareTo(temp.getData()) < 0){
+            if (temp.getLeft()==null){
+                temp.setLeft(new DS5_BinarySearchTree_Node<E>((E) data));
+                return true;
+            }
+            else {
+                boolean a = insertHelper(temp.getLeft(),data);
+                if (a) return true;
+            }
         }
-        if (temp.getRight()!=null){
-            insertHelper(temp,data);
+        else {
+            if (temp.getRight()==null){
+                temp.setRight(new DS5_BinarySearchTree_Node<E>((E) data));
+                return true;
+            }
+            else {
+                boolean a = insertHelper(temp.getRight(),data);
+                if (a) return true;
+            }
         }
-        return 
+        return false;
     }
 
     @Override
