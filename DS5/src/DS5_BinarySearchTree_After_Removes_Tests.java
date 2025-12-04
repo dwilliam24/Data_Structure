@@ -1218,31 +1218,25 @@ public class DS5_BinarySearchTree_After_Removes_Tests
             for(int x=0; x<10; x++) {
 
 
-
                 Object check = bst.getConstructor().newInstance();
 
                 int numberOfItems = (int) (Math.random() * 5) + 6;
                 ArrayList<Integer> numbers = new ArrayList<>();
 
-                for(int a=0; a<numberOfItems;)
-                {
-                    int num=(int)(Math.random()*20+1);
-                    if(!numbers.contains(num))
-                    {
+                for (int a = 0; a < numberOfItems; ) {
+                    int num = (int) (Math.random() * 20 + 1);
+                    if (!numbers.contains(num)) {
                         numbers.add(num);
                         a++;
                     }
                 }
-
-                for(Integer num:numbers)
-                    Assert.assertTrue((Boolean)insert.invoke(check,num));
-
+                System.out.println(numbers);
+                for (Integer num : numbers)
+                    Assert.assertTrue((Boolean) insert.invoke(check, num));
                 for(Integer num:numbers)
                     Assert.assertTrue((Boolean)remove.invoke(check,num));
-
                 for(Integer num:numbers)
                     Assert.assertFalse((Boolean)remove.invoke(check,num));
-
                 Assert.assertNull(getRoot.invoke(check));
                 Assert.assertEquals(0, ((Integer) size.invoke(check)).intValue());
                 Assert.assertEquals(0, ((Integer) height.invoke(check)).intValue());
