@@ -223,95 +223,38 @@ public class DS5_BinarySearchTree<E extends Comparable<E>> implements DS5_Binary
     @Override
     public boolean remove(Comparable data) {
         if (!contains(data)) return false;
-        if (data.equals(root.getData())) {
-            if (root.getRight() == null && root.getLeft() == null) {
-                root = null;
-                return true;
-            } else if (root.getLeft() == null && root.getRight() != null) {
-                root = root.getRight();
-                return true;
-            } else if (root.getLeft() != null && root.getRight() == null) {
-                root = root.getLeft();
-                return true;
-            } else if (root.getLeft() != null && root.getRight() != null) {
-                DS5_BinarySearchTree_Node<E> a = smallestRight(root.getRight());
-                remove(a.getData());
-                root.setData(a.getData());
-                return true;
-            }
-            return false;
-        }
-
-        DS5_BinarySearchTree_Node<E> a = removeHelper(root, data);
-        if (a.getLeft() != null && data.equals(a.getLeft().getData())) {
-            if (a.getLeft().getLeft() == null && a.getLeft().getRight() == null) {
-                a.setLeft(null);
-                return true;
-            } else if (a.getLeft().getLeft() != null && a.getLeft().getRight() == null) {
-                a.setLeft(a.getLeft().getLeft());
-                return true;
-            } else if (a.getLeft().getLeft() == null && a.getLeft().getRight() != null) {
-                a.setLeft(a.getLeft().getRight());
-                return true;
-            } else if (a.getLeft().getLeft() != null && a.getLeft().getRight() != null) {
-                DS5_BinarySearchTree_Node<E> b = smallestRight(a.getLeft());
-                System.out.println(b.getData());
-                E bData = b.getData();
-                remove(b.getData());
-                a.getLeft().setData(bData);
-                return true;
-            }
-        } else if (a.getRight() != null && data.equals(a.getRight().getData())) {
-            if (a.getRight().getLeft() == null && a.getRight().getRight() == null) {
-                a.setRight(null);
-                return true;
-            } else if (a.getRight().getLeft() != null && a.getRight().getRight() == null) {
-                a.setRight(a.getRight().getLeft());
-                return true;
-            } else if (a.getRight().getLeft() == null && a.getRight().getRight() != null) {
-                a.setRight(a.getRight().getRight());
-                return true;
-            } else if (a.getRight().getLeft() != null && a.getRight().getRight() != null) {
-                DS5_BinarySearchTree_Node<E> b = smallestRight(a.getRight());
-                E bData = b.getData();
-                remove(b.getData());
-                a.getRight().setData(bData);
-                return true;
-            }
-        }
-        return false;
+        root = removeHelper(root, data);
+        return true;
     }
 
     private DS5_BinarySearchTree_Node<E> removeHelper(DS5_BinarySearchTree_Node<E> node, Comparable data) {
-        if (node == null) return root;
-        if (data.compareTo(node.getData()) < 0) {
-            if ((node.getRight() != null && data.compareTo(node.getRight().getData()) == 0) || (node.getLeft() != null && data.compareTo(node.getLeft().getData()) == 0)) {
-                return node;
-            }
-            return removeHelper(node.getLeft(), data);
+        if (node == null) return null;
+        int a = data.compareTo(node.getData());
+
+        if (a < 0) {
+            node.setLeft(removeHelper(node.getLeft(), data));
+        } else if (a > 0) {
+            node.setRight(removeHelper(node.getRight(), data));
         } else {
-            if ((node.getRight() != null && data.compareTo(node.getRight().getData()) == 0) || (node.getLeft() != null && data.compareTo(node.getLeft().getData()) == 0)) {
-                return node;
-            }
-            return removeHelper(node.getRight(), data);
+            if (node.getLeft() == null && node.getRight() == null)
+                return null;
+
+            if (node.getLeft() == null) return node.getRight();
+            if (node.getRight() == null) return node.getLeft();
+
+            DS5_BinarySearchTree_Node<E> after = smallestRight(node.getRight());
+            node.setData(after.getData());
+            node.setRight(removeHelper(node.getRight(), after.getData()));
         }
+
+        return node;
     }
+
 
     public DS5_BinarySearchTree_Node<E> smallestRight(DS5_BinarySearchTree_Node<E> node) {
-        DS5_BinarySearchTree_Node<E> a = null;
-        DS5_BinarySearchTree_Node<E> b = null;
-
-        DS5_BinarySearchTree_Node<E> x = null;
-        if (node == null) {
-            return x;
-        }
-        x = node;
-        a = smallestRight(node.getLeft());
-        b = smallestRight(node.getRight());
-
-        if (a != null && a.getData().compareTo(x.getData()) < 0) x = a;
-        if (b != null && b.getData().compareTo(x.getData()) < 0) x = b;
-
-        return x;
+        while (node.getLeft() != null)
+            node = node.getLeft();
+        return node;
     }
+
 }
