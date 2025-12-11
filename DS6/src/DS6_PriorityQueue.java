@@ -35,9 +35,7 @@ public class DS6_PriorityQueue<E extends Comparable<E>> implements DS6_PriorityQ
     @Override
     public E element() {
         if (heap.isEmpty()) return null;
-        E a = heap.remove();
-        heap.insert(a);
-        return a;
+        return heap.get(0);
     }
 
     @Override
