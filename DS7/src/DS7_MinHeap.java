@@ -32,7 +32,10 @@ public class DS7_MinHeap<E extends Comparable<E>> implements DS7_HeapInterface<E
     @Override
     public E remove() {
         if (heap.isEmpty()) return null;
-
+        if(heap.size()==1){
+            E last = heap.removeLast();
+            return last;
+        }
         E root = heap.getFirst();
 
         E last = heap.removeLast();

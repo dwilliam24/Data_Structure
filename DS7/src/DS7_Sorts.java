@@ -26,12 +26,71 @@ public class DS7_Sorts {
         }
     }
 
-    public static void mergeSort(int[] a, int b, int c) {
+    public static void mergeSort(int[] list, int from, int to) {
+        int[] temp = new int[list.length];
 
+        if (to == from)
+            return;
+
+        int middle = (from + to) / 2;
+        mergeSort(list, from, middle);
+        mergeSort(list, middle + 1, to);
+
+        int i = from;
+        int j = middle + 1;
+        int k = from;
+
+        while (i <= middle && j <= to) {
+            if (list[i] < list[j])
+                temp[k++] = list[i++];
+            else
+                temp[k++] = list[j++];
+        }
+        while (i <= middle)
+            temp[k++] = list[i++];
+
+        while (j <= to)
+            temp[k++] = list[j++];
+
+        for (k = from; k < to + 1; k++)
+            list[k] = temp[k];
     }
 
-    public static void quickSort(int[] a, int b, int c) {
+    public static void quickSort(int[] list, int from, int to) {
+        if (from >= to)
+            return;
 
+        int p = (from + to) / 2;
+        int i = from;
+        int j = to;
+
+        while (i <= j) {
+            if (list[i] <= list[p]) i++;
+            else if (list[j] >= list[p]) j--;
+            else {
+
+                int temp = list[i];
+                list[i] = list[j];
+                list[j] = temp;
+
+                i++;
+                j--;
+            }
+        }
+        if (p < j) {
+            int temp = list[j];
+            list[j] = list[p];
+            list[p] = temp;
+            p= j;
+        } else if (p > i) {
+            int temp = list[i];
+            list[i] = list[p];
+            list[p] = temp;
+
+            p = i;
+        }
+        quickSort(list, from, p - 1);
+        quickSort(list, p + 1, to);
     }
 
     public static void heapSort(int[] list) {
