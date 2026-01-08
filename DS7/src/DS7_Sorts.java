@@ -81,7 +81,7 @@ public class DS7_Sorts {
             int temp = list[j];
             list[j] = list[p];
             list[p] = temp;
-            p= j;
+            p = j;
         } else if (p > i) {
             int temp = list[i];
             list[i] = list[p];
@@ -95,12 +95,11 @@ public class DS7_Sorts {
 
     public static void heapSort(int[] list) {
         DS7_MinHeap<Integer> heap = new DS7_MinHeap<>();
-        int b = list.length;
         for (int j : list) {
             heap.insert(j);
         }
 
-        for (int i = 0; i < b; i++)
+        for (int i = 0; i < list.length; i++)
             list[i] = heap.remove();
     }
 }
