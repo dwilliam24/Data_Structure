@@ -60,16 +60,14 @@ public class DS8_DFS {
 
             if ((int) temp.getX() == (int) end.getX() && (int) temp.getY() == (int) end.getY()) return true;
 
-            System.out.println(stack);
             visited[(int) temp.getY()][(int) temp.getX()] = true;
 
             if (((int) temp.getY()) - 1 >= 0 && maze[((int) temp.getY()) - 1][(int) temp.getX()] != 'W' && !visited[((int) temp.getY()) - 1][(int) temp.getX()]) {
-                if (maze[((int) temp.getY()) - 1][(int) temp.getX()] != 'S' && maze[((int) temp.getY()) - 1][(int) temp.getX()] != 'E') {
+                if (maze[((int) temp.getY()) - 1][(int) temp.getX()] != 'S' && maze[((int) temp.getY()) - 1][(int) temp.getX()] != 'E' && maze[((int) temp.getY()) - 1][(int) temp.getX()] != '-') {
                     for (int y = 0; y < maze.length; y++) {
                         for (int x = 0; x < maze[0].length; x++) {
-                            if ((((int) temp.getY()) - 1 != y && (int) temp.getX() != x) && Character.toLowerCase(maze[y][x]) == Character.toLowerCase(maze[((int) temp.getY()) - 1][(int) temp.getX()])) {
+                            if (!(((int) temp.getY()) - 1 == y && (int) temp.getX() == x) && Character.toLowerCase(maze[y][x]) == Character.toLowerCase(maze[((int) temp.getY()) - 1][(int) temp.getX()])) {
                                 stack.push(new Point(x, y));
-                                visited[y][x] = true;
                             }
                         }
                     }
@@ -79,12 +77,11 @@ public class DS8_DFS {
             }
 
             if (((int) temp.getY()) + 1 < maze.length && maze[((int) temp.getY()) + 1][(int) temp.getX()] != 'W' && !visited[((int) temp.getY()) + 1][(int) temp.getX()]) {
-                if (maze[((int) temp.getY()) + 1][(int) temp.getX()] != 'S' && maze[((int) temp.getY()) + 1][(int) temp.getX()] != 'E') {
+                if (maze[((int) temp.getY()) + 1][(int) temp.getX()] != 'S' && maze[((int) temp.getY()) + 1][(int) temp.getX()] != 'E' && maze[((int) temp.getY()) + 1][(int) temp.getX()] != '-') {
                     for (int y = 0; y < maze.length; y++) {
                         for (int x = 0; x < maze[0].length; x++) {
-                            if ((((int) temp.getY()) + 1 != y && (int) temp.getX() != x) && Character.toLowerCase(maze[y][x]) == Character.toLowerCase(maze[((int) temp.getY()) + 1][(int) temp.getX()])) {
+                            if (!(((int) temp.getY()) + 1 == y && (int) temp.getX() == x) && Character.toLowerCase(maze[y][x]) == Character.toLowerCase(maze[((int) temp.getY()) + 1][(int) temp.getX()])) {
                                 stack.push(new Point(x, y));
-                                visited[y][x] = true;
                             }
                         }
                     }
@@ -94,12 +91,11 @@ public class DS8_DFS {
 
             }
             if (((int) temp.getX()) - 1 >= 0 && maze[(int) temp.getY()][(int) temp.getX() - 1] != 'W' && !visited[(int) temp.getY()][((int) temp.getX()) - 1]) {
-                if (maze[((int) temp.getY())][(int) temp.getX() - 1] != 'S' && maze[((int) temp.getY())][(int) temp.getX() - 1] != 'E') {
+                if (maze[((int) temp.getY())][(int) temp.getX() - 1] != 'S' && maze[((int) temp.getY())][(int) temp.getX() - 1] != 'E' && maze[((int) temp.getY())][(int) temp.getX() - 1] != '-') {
                     for (int y = 0; y < maze.length; y++) {
                         for (int x = 0; x < maze[0].length; x++) {
-                            if ((((int) temp.getX()) - 1 != x && (int) temp.getY() != y) && Character.toLowerCase(maze[y][x]) == Character.toLowerCase(maze[((int) temp.getY())][(int) temp.getX() - 1])) {
+                            if (!(((int) temp.getX()) - 1 == x && (int) temp.getY() == y) && Character.toLowerCase(maze[y][x]) == Character.toLowerCase(maze[((int) temp.getY())][(int) temp.getX() - 1])) {
                                 stack.push(new Point(x, y));
-                                visited[y][x] = true;
                             }
                         }
                     }
@@ -108,12 +104,11 @@ public class DS8_DFS {
                 visited[(int) temp.getY()][(int) temp.getX() - 1] = true;
             }
             if (((int) temp.getX()) + 1 < maze[0].length && maze[((int) temp.getY())][((int) temp.getX()) + 1] != 'W' && !visited[((int) temp.getY())][((int) temp.getX()) + 1]) {
-                if (maze[((int) temp.getY())][(int) temp.getX() + 1] != 'S' && maze[((int) temp.getY())][(int) temp.getX() + 1] != 'E') {
+                if (maze[((int) temp.getY())][(int) temp.getX() + 1] != 'S' && maze[((int) temp.getY())][(int) temp.getX() + 1] != 'E' && maze[((int) temp.getY())][(int) temp.getX() + 1] != '-') {
                     for (int y = 0; y < maze.length; y++) {
                         for (int x = 0; x < maze[0].length; x++) {
-                            if ((((int) temp.getX()) + 1 != x && (int) temp.getY() != y) && Character.toLowerCase(maze[y][x]) == Character.toLowerCase(maze[((int) temp.getY())][(int) temp.getX() + 1])) {
+                            if (!(((int) temp.getX()) + 1 == x && (int) temp.getY() == y) && Character.toLowerCase(maze[y][x]) == Character.toLowerCase(maze[((int) temp.getY())][(int) temp.getX() + 1])) {
                                 stack.push(new Point(x, y));
-                                visited[y][x] = true;
                             }
                         }
                     }
