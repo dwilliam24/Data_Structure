@@ -30,7 +30,21 @@ public class DS8_AStar {
                 int y = temp.getLocation().y + i[1];
                 int x = temp.getLocation().x + i[0];
                 if (x >= 0 && x < maze[0].length && y >= 0 && y < maze.length) {
-                    for (int a = 0; a< closed.size(); )
+                    DS8_AStar_Node<Point> smallestF = open.get(0);
+                    for (int a = 0; a< open.size(); a++){
+                        if (smallestF.getF()<open.get(a).getF()){
+                            smallestF=open.get(a);
+                        }
+                    }
+                    if (smallestF.getLocation().equals(end)) return new DS8_Path_Solution(closed, temp.getF());
+                    closed.add(smallestF);
+                    for (int[] k : dir) {
+                        y = smallestF.getLocation().y + k[1];
+                        x = smallestF.getLocation().x + k[0];
+                        if (x >= 0 && x < maze[0].length && y >= 0 && y < maze.length) {
+                            
+                        }
+                    }
                 }
             }
 
