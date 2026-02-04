@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.awt.Point;
-import java.util.Arrays;
 import java.util.Collections;
 
 public class DS8_AStar {
@@ -20,10 +19,9 @@ public class DS8_AStar {
         }
 
         ArrayList<DS8_AStar_Node<Point>> open = new ArrayList<>();
-        ArrayList<Point> closed = new ArrayList<>();
+        ArrayList<DS8_AStar_Node<Point>> closed = new ArrayList<>();
 
-        open.add(new DS8_AStar_Node<>(start, null, 0,
-                Math.abs(start.x - end.x) + Math.abs(start.y - end.y)));
+        open.add(new DS8_AStar_Node<>(start, null, 0, Math.abs(start.x - end.x) + Math.abs(start.y - end.y)));
 
         while (!open.isEmpty()) {
 
@@ -32,17 +30,17 @@ public class DS8_AStar {
 
             if (temp.getLocation().equals(end)) {
                 ArrayList<Point> path = new ArrayList<>();
-                DS8_AStar_Node<Point> cur = temp;
+                DS8_AStar_Node<Point> h = temp;
 
-                while (cur != null) {
-                    path.add(0, cur.getLocation());
-                    cur = cur.getParent();
+                while (h != null) {
+                    path.add(0, h.getLocation());
+                    h = h.getParent();
                 }
 
                 return new DS8_Path_Solution<Point>(path, path.size() - 1);
             }
 
-            closed.add(temp.getLocation());
+            closed.add(temp);
 
             int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 
@@ -56,8 +54,8 @@ public class DS8_AStar {
                 Point next = new Point(x, y);
 
                 boolean visited = false;
-                for (Point p : closed) {
-                    if (p.equals(next)) {
+                for (DS8_AStar_Node<Point> p : closed) {
+                    if (p.getLocation().equals(next)) {
                         visited = true;
                         break;
                     }
@@ -89,7 +87,7 @@ public class DS8_AStar {
         }
 
         ArrayList<DS8_AStar_Node<Point>> open = new ArrayList<>();
-        ArrayList<Point> closed = new ArrayList<>();
+        ArrayList<DS8_AStar_Node<Point>> closed = new ArrayList<>();
 
         open.add(new DS8_AStar_Node<>(start, null, 0, 0));
 
@@ -103,7 +101,7 @@ public class DS8_AStar {
                 return temp.getG();
             }
 
-            closed.add(temp.getLocation());
+            closed.add(temp);
 
             int[][] dirs = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}, {1, 1}, {-1, 1}, {1, -1}, {-1, -1}};
 
@@ -114,8 +112,15 @@ public class DS8_AStar {
                 if (y < 0 || y >= rows || x < 0 || x >= cols) continue;
 
                 Point next = new Point(x, y);
-
-                if (closed.contains(next)) continue;
+                
+                boolean f = false;
+                for (int i = 0; i < closed.size(); i++) {
+                    if (closed.get(i).getLocation().equals(next)) {
+                        f = true;
+                        break;
+                    }
+                }
+                if (f) continue;
 
                 int g = 0;
 
