@@ -112,7 +112,7 @@ public class DS8_AStar {
                 if (y < 0 || y >= rows || x < 0 || x >= cols) continue;
 
                 Point next = new Point(x, y);
-                
+
                 boolean f = false;
                 for (int i = 0; i < closed.size(); i++) {
                     if (closed.get(i).getLocation().equals(next)) {
