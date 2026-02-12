@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class DS8_Graphs {
 
@@ -33,9 +34,65 @@ public class DS8_Graphs {
             if (bridge.isEmpty()) return null;
             else return bridge;
     }
+
     public static String[] stronglyConnectedRegions(String[] edges, String vertices) {
-        
+
+        boolean[][] reach = new boolean[vertices.length()][vertices.length()];
+
+        for (String edge : edges) {
+            int y = vertices.indexOf(edge.charAt(0));
+            int x = vertices.indexOf(edge.charAt(1));
+
+            reach[y][x] = true;
+        }
+
+        for (int k = 0; k < vertices.length(); k++) {
+            for (int i = 0; i < vertices.length(); i++) {
+                for (int j = 0; j < vertices.length(); j++) {
+                    if (reach[i][k] && reach[k][j]) {
+                        reach[i][j] = true;
+                    }
+                }
+            }
+        }
+
+        ArrayList<String> regionsList = new ArrayList<>();
+        boolean[] visited = new boolean[vertices.length()];
+
+        for (int i = 0; i < vertices.length(); i++) {
+            if (!visited[i]) {
+                ArrayList<Integer> componentIndices = new ArrayList<>();
+                componentIndices.add(i);
+                visited[i] = true;
+
+                for (int j = i + 1; j < vertices.length(); j++) {
+                    if (!visited[j]) {
+                        if (reach[i][j] && reach[j][i]) {
+                            componentIndices.add(j);
+                            visited[j] = true;
+                        }
+                    }
+                }
+
+                if (componentIndices.size() > 1) {
+                    Collections.sort(componentIndices);
+
+                    String g = "";
+                    for (int idx : componentIndices) {
+                        g += vertices.charAt(idx);
+                    }
+                    regionsList.add(g);
+                }
+            }
+        }
+
+        if (regionsList.isEmpty()) {
+            return null;
+        }
+
+        return regionsList.toArray(new String[0]);
     }
+
     public static Boolean breadthFirstSearch_Unweighted(String[] edges, String vertices, char start, char end) {
         int[] indexes = new int[26];
         Arrays.fill(indexes, -1);
