@@ -32,13 +32,16 @@ public class CalcFrame extends JFrame {
         setLayout(null);
 
         lbl_operand2.setBounds(20,20,200,20);
+        lbl_operand2.setHorizontalAlignment(JLabel.RIGHT);
         add(lbl_operand2);
 
         lbl_Operation.setBounds(200,40,20,20);
+        lbl_Operation.setHorizontalAlignment(JLabel.RIGHT);
         add(lbl_Operation);
 
         lbl_operand1.setBounds(20 ,60, 200, 20);
         add(lbl_operand1);
+        lbl_operand1.setHorizontalAlignment(JLabel.RIGHT);
         lbl_operand1.setEditable(false);
 
         btn_1.setBounds(20,100,60,60);
@@ -100,10 +103,7 @@ public class CalcFrame extends JFrame {
         btn_divide.addActionListener(e -> clickedDivide());
         add(btn_divide);
 
-
-
         setVisible(true);
-
     }
 
     private void clickedDivide() {
@@ -223,42 +223,72 @@ public class CalcFrame extends JFrame {
     }
 
     private void clicked0() {
-        lbl_operand1.setText(lbl_operand1.getText()+"0");
+        if (!lbl_operand1.getText().isEmpty()&&lbl_operand2.getText().isEmpty()){
+            lbl_operand1.setText("0");
+        }
+        else lbl_operand1.setText(lbl_operand1.getText()+"0");
     }
 
     private void clicked9() {
-        lbl_operand1.setText(lbl_operand1.getText()+"9");
+        if (!lbl_operand1.getText().isEmpty()&&lbl_operand2.getText().isEmpty()){
+            lbl_operand1.setText("9");
+        }
+        else lbl_operand1.setText(lbl_operand1.getText()+"9");
     }
 
     private void clicked8() {
-        lbl_operand1.setText(lbl_operand1.getText()+"8");
+        if (!lbl_operand1.getText().isEmpty()&&lbl_operand2.getText().isEmpty()){
+            lbl_operand1.setText("8");
+        }
+        else lbl_operand1.setText(lbl_operand1.getText()+"8");
     }
 
     private void clicked7() {
-        lbl_operand1.setText(lbl_operand1.getText()+"7");
+        if (!lbl_operand1.getText().isEmpty()&&lbl_operand2.getText().isEmpty()){
+            lbl_operand1.setText("7");
+        }
+        else lbl_operand1.setText(lbl_operand1.getText()+"7");
     }
 
     private void clicked6() {
-        lbl_operand1.setText(lbl_operand1.getText()+"6");
+        if (!lbl_operand1.getText().isEmpty()&&lbl_operand2.getText().isEmpty()){
+            lbl_operand1.setText("6");
+        }
+        else lbl_operand1.setText(lbl_operand1.getText()+"6");
     }
 
     private void clicked5() {
-        lbl_operand1.setText(lbl_operand1.getText()+"5");
+        if (!lbl_operand1.getText().isEmpty()&&lbl_operand2.getText().isEmpty()){
+            lbl_operand1.setText("5");
+        }
+        else lbl_operand1.setText(lbl_operand1.getText()+"5");
     }
 
     private void clicked4() {
-        lbl_operand1.setText(lbl_operand1.getText()+"4");
+        if (!lbl_operand1.getText().isEmpty()&&lbl_operand2.getText().isEmpty()){
+            lbl_operand1.setText("4");
+        }
+        else lbl_operand1.setText(lbl_operand1.getText()+"4");
     }
 
     private void clicked3() {
-        lbl_operand1.setText(lbl_operand1.getText()+"3");
+        if (!lbl_operand1.getText().isEmpty()&&lbl_operand2.getText().isEmpty()){
+            lbl_operand1.setText("3");
+        }
+        else lbl_operand1.setText(lbl_operand1.getText()+"3");
     }
 
     private void clicked2() {
-        lbl_operand1.setText(lbl_operand1.getText()+"2");
+        if (!lbl_operand1.getText().isEmpty()&&lbl_operand2.getText().isEmpty()){
+            lbl_operand1.setText("2");
+        }
+        else lbl_operand1.setText(lbl_operand1.getText()+"2");
     }
 
     private void clicked1() {
-        lbl_operand1.setText(lbl_operand1.getText()+"1");
+        if (!lbl_operand1.getText().isEmpty()&&lbl_operand2.getText().isEmpty()){
+            lbl_operand1.setText("1");
+        }
+        else lbl_operand1.setText(lbl_operand1.getText()+"1");
     }
 }
