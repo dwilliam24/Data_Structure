@@ -1,3 +1,5 @@
+package Calculator;
+
 import javax.swing.*;
 
 public class CalcFrame extends JFrame {
