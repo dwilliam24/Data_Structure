@@ -1,6 +1,6 @@
 package Contact;
 
-public class Person{
+public class Person implements Comparable<Person>{
     private String firstName;
     private String lastName;
     private  String phoneNumber;
@@ -47,5 +47,14 @@ public class Person{
     @Override
     public String toString(){
         return lastName+", "+firstName;
+    }
+
+
+    @Override
+    public int compareTo(Person o) {
+        if (o.lastName.compareTo(lastName)>0){
+            return -1;
+        }
+        else return 1;
     }
 }
