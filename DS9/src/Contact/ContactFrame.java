@@ -6,6 +6,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -48,7 +49,7 @@ public class ContactFrame extends JFrame{
 
         scrollPane = new JScrollPane(contactsList);
         scrollPane.setBounds(20, 40, 120, 200);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         add(scrollPane);
 
         contactsList.addListSelectionListener(e -> SelectionClick());
@@ -111,9 +112,15 @@ public class ContactFrame extends JFrame{
             e.printStackTrace();
             System.out.println(e);
         }
-        for (int o = 0; o<a.size(); o++){
-            contactArray.add(new Person(a.get(o).split("~")[0],a.get(o).split("~")[1],a.get(o).split("~")[2],a.get(o).split("~")[3]));
+        for (String s : a) {
+            String[] array = s.split("■");
+
+            for(int d=0; d<array.length; d++){
+               array[d] = array[d].substring(0,array[d].length()-1);
+            }
+            contactArray.add(new Person(array[0], array[1], array[2], array[3]));
         }
+        contactsList.setListData(contactArray.toArray(new Person[0]));
 
         framePhoneNumber.addKeyListener(new KeyAdapter() {
             @Override
@@ -131,7 +138,8 @@ public class ContactFrame extends JFrame{
 
 
     private void clearClicked() {
-
+        contactsList.setSelectedIndex(-1);
+        contactsList.clearSelection();
         frameFirstName.setText("");
         frameAddress.setText("");
         frameLastName.setText("");
@@ -153,13 +161,22 @@ public class ContactFrame extends JFrame{
     }
 
     private void saveChangesClicked() {
+        if (frameFirstName.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "First Name is blank", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        } else if (frameLastName.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Last Name is blank", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         Person person = new Person(frameFirstName.getText(), frameLastName.getText(), framePhoneNumber.getText(), frameAddress.getText());
         contactArray.remove(contactsList.getSelectedIndex());
         contactArray.add(person);
 
-        contactsList.setSelectedIndex(-1);
-        contactsList.clearSelection();
 
+        contactsList.clearSelection();
+        contactsList.setSelectedIndex(-1);
+        Collections.sort(contactArray);
         contactsList.setListData(contactArray.toArray(new Person[0]));
 
         frameFirstName.setText("");
@@ -206,19 +223,17 @@ public class ContactFrame extends JFrame{
             framePhoneNumber.setText("");
         }
     }
-    private void saveContactsMeth(){
+    public void saveContactsMeth(){
         try{
             File fileRef = new File(file);
             FileWriter fileWriter = new FileWriter(fileRef,false);
             PrintWriter printWriter = new PrintWriter(fileWriter);
             for (int a =0; a<contactArray.size(); a++){
                 Person contact = contactArray.get(a);
-                printWriter.println(contact.getFirstName()+"~"+contact.getLastName()+"~"+contact.getPhoneNumber()+"~"+contact.getAddress());
+                printWriter.println(contact.getFirstName()+" "+"■"+contact.getLastName()+" "+"■"+contact.getPhoneNumber()+" "+"■"+contact.getAddress()+" ■");
             }
             fileWriter.close();
             printWriter.close();
-            System.out.println("Save Complete.");
-            System.out.println("Good bye.\n");
         }
         catch (Exception e) {
             e.printStackTrace();
