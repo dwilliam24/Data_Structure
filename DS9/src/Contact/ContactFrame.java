@@ -3,17 +3,14 @@ package Contact;
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyAdapter;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.File;
 import java.util.Scanner;
 
-public class ContactFrame extends JFrame{
+public class ContactFrame extends JFrame {
     private JLabel contacts = new JLabel("Contacts:");
     private String file = "C:\\Users\\k2306075\\OneDrive - Katy Independent School District\\GitHub\\Data_Structure\\DS9\\Contacts.txt";
 
@@ -96,7 +93,7 @@ public class ContactFrame extends JFrame{
         add(deleteContacts);
 
         ArrayList<String> a = null;
-        try{
+        try {
             File fileRef = new File(file);
             if (!fileRef.exists())
                 fileRef.createNewFile();
@@ -107,16 +104,15 @@ public class ContactFrame extends JFrame{
                 a.add(scanner.nextLine());
             }
             scanner.close();
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e);
         }
         for (String s : a) {
             String[] array = s.split("■");
 
-            for(int d=0; d<array.length; d++){
-               array[d] = array[d].substring(0,array[d].length()-1);
+            for (int d = 0; d < array.length; d++) {
+                array[d] = array[d].substring(0, array[d].length() - 1);
             }
             contactArray.add(new Person(array[0], array[1], array[2], array[3]));
         }
@@ -223,19 +219,19 @@ public class ContactFrame extends JFrame{
             framePhoneNumber.setText("");
         }
     }
-    public void saveContactsMeth(){
-        try{
+
+    public void saveContactsMeth() {
+        try {
             File fileRef = new File(file);
-            FileWriter fileWriter = new FileWriter(fileRef,false);
+            FileWriter fileWriter = new FileWriter(fileRef, false);
             PrintWriter printWriter = new PrintWriter(fileWriter);
-            for (int a =0; a<contactArray.size(); a++){
+            for (int a = 0; a < contactArray.size(); a++) {
                 Person contact = contactArray.get(a);
-                printWriter.println(contact.getFirstName()+" "+"■"+contact.getLastName()+" "+"■"+contact.getPhoneNumber()+" "+"■"+contact.getAddress()+" ■");
+                printWriter.println(contact.getFirstName() + " " + "■" + contact.getLastName() + " " + "■" + contact.getPhoneNumber() + " " + "■" + contact.getAddress() + " ■");
             }
             fileWriter.close();
             printWriter.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println(e);
         }
