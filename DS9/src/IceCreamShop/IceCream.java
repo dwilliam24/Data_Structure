@@ -6,8 +6,6 @@ public class IceCream {
     private String flavor;
     private int container;
     private int scoops;
-    private ArrayList<String> toppings;
-    double total;
 
     public IceCream(String flavor, int container,int scoops, ArrayList<String> toppings, double total){
         this.flavor = flavor;
@@ -15,7 +13,9 @@ public class IceCream {
         this.scoops=scoops;
         this.toppings=toppings;
         this.total=total;
-    }
+    }    private ArrayList<String> toppings;
+    double total;
+
     public String getFlavor(){
         return flavor;
     }
