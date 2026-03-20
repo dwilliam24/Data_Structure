@@ -20,8 +20,6 @@ public class textEditor extends JFrame {
     private JMenuItem replace = new JMenuItem("Replace");
     private JMenuItem wordCount = new JMenuItem("Word Count");
     private JTabbedPane tabs = new JTabbedPane();
-    private ArrayList<JScrollPane> scrollPanes = new ArrayList<>();
-    private ArrayList<JPanel> panels = new ArrayList<>();
     private ArrayList<JTextArea> text = new ArrayList<>();
 
     public textEditor(){
@@ -42,21 +40,9 @@ public class textEditor extends JFrame {
         edit.add(font);
         edit.add(replace);
         edit.add(wordCount);
-
-        panels.add(new JPanel());
-        text.add(new JTextArea());
-        scrollPanes.add(new JScrollPane());
-
         tabs.setBounds(5,10,975,425);
         add(tabs);
-        for (int a =0; a<panels.size(); a++){
-            scrollPanes.get(a).setBounds(10,10,200,200);
-            text.get(a).setText("dfkgjdfjgfdgkjfg");
-            scrollPanes.get(a).add(text.get(a));
-            panels.get(a).add(scrollPanes.get(a));
-            tabs.add(panels.get(a));
-        }
-        //tabs.add(new JPanel());
+
 
 
 
@@ -76,13 +62,33 @@ public class textEditor extends JFrame {
         if (result==JFileChooser.APPROVE_OPTION){
             File selectedFile = fileOpen.getSelectedFile();
             ArrayList<String> textRaw =  getFile(selectedFile);
-            text.add(new JTextArea(textRaw.toString()));
+
+            String temp ="";
+            for (int x=0; x<textRaw.size(); x++){
+                temp+=textRaw.get(x)+"\n";
+            }
+
+            JTextArea b = new JTextArea();
+            b.setBounds(100,100,500,1000);
+            b.setLineWrap(true);
+            b.setText(temp);
+            JScrollPane c = new JScrollPane(b);
+            c.setName(selectedFile.getName());
+            c.setBounds(100,100,500,1000);
+            tabs.add(c,CENTER_ALIGNMENT);
+            text.add(b);
         }
     }
 
     private void createClicked() {
-
-
+        JTextArea b = new JTextArea();
+        b.setBounds(100,100,500,1000);
+        b.setLineWrap(true);
+        JScrollPane c = new JScrollPane(b);
+        c.setName("Untitled");
+        c.setBounds(100,100,500,1000);
+        tabs.add(c,CENTER_ALIGNMENT);
+        text.add(b);
     }
 
     private ArrayList<String> getFile(File filePath){
