@@ -37,6 +37,7 @@ public class IceCreamShop extends JFrame {
     private JButton delete = new JButton("Delete");
 
     private ArrayList<IceCream> orders = new ArrayList<>();
+
     private ArrayList<String> toppingsSelected = new ArrayList<>();
 
     private JLabel subTotalName = new JLabel("Sub Total:");
