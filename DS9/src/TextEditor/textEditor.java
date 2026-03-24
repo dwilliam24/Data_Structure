@@ -220,9 +220,8 @@ public class textEditor extends JFrame {
             files.set(index, file);
             saved.set(index, true);
             tabs.setTitleAt(index, file.getName());
-            if (showPopup) JOptionPane.showMessageDialog(this, "Saved.");
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
