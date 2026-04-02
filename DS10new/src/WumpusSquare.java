@@ -81,5 +81,14 @@ public class WumpusSquare {
     public boolean getWumpus() {
         return wumpus;
     }
-
+    public String toString(){
+        if (gold&&wumpus) return "@";
+        else if (deadWumpus&&gold) return "!";
+        else if (gold) return "G";
+        else if (pit) return "P";
+        else if (wumpus) return "W";
+        else if (deadWumpus) return "D";
+        else if (ladder) return "L";
+        else return "*";
+    }
 }

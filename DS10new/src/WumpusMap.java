@@ -20,6 +20,6 @@ public class WumpusMap {;
         return grid[row][col];
     }
     public String toString(){
-        return
+        return"a";
     }
 }
