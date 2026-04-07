@@ -1,5 +1,6 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
@@ -9,9 +10,11 @@ public class WumpusPanel extends JPanel implements KeyListener {
     public static final int PLAYING =0;
     public static final int DEAD =1;
     public static final int WON =2;
+
     private int status;
     private WumpusPlayer player;
     private WumpusMap map;
+
     private BufferedImage floor;
     private BufferedImage arrow;
     private BufferedImage fog;
@@ -28,6 +31,9 @@ public class WumpusPanel extends JPanel implements KeyListener {
     private BufferedImage playerRight;
     private BufferedImage buffer;
     public WumpusPanel(){
+        setBounds(0,0,500,500);
+        buffer = new BufferedImage(500,500,BufferedImage.TYPE_CUSTOM);
+
         try {
             floor = ImageIO.read(new File("src/WumpusImages/Floor.gif"));
             arrow = ImageIO.read(new File("src/WumpusImages/arrow.gif"));
@@ -37,7 +43,7 @@ public class WumpusPanel extends JPanel implements KeyListener {
             pit = ImageIO.read(new File("src/WumpusImages/pit.gif"));
             breeze = ImageIO.read(new File("src/WumpusImages/breeze.gif"));
             wumpus = ImageIO.read(new File("src/WumpusImages/wumpus.gif"));
-            deadWumpus = ImageIO.read(new File("src/WumpusImages/deadwumpus.gif"));
+            deadWumpus = ImageIO.read(new File("src/WumpusImages/deadWumpus.gif"));
             stench = ImageIO.read(new File("src/WumpusImages/stench.gif"));
             playerUp = ImageIO.read(new File("src/WumpusImages/playerUp.png"));
             playerDown = ImageIO.read(new File("src/WumpusImages/playerDown.png"));
@@ -49,16 +55,32 @@ public class WumpusPanel extends JPanel implements KeyListener {
     }
     @Override
     public void keyTyped(KeyEvent e) {
-
+        if (e.getKeyChar()=='a'){
+            System.out.println("a");
+        }
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-
+        //
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
+        //
+    }
+    public void reset(){
+        status=0;
+        map = new WumpusMap();
+        player= new WumpusPlayer(0,true,false);
+    }
+    public void paint(Graphics g){
+        g.drawImage(fog,0,0,null);
+==
+    }
 
+    public void addNotify(){
+        super.addNotify();
+        requestFocus();
     }
 }

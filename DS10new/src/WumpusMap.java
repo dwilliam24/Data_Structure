@@ -6,6 +6,9 @@ public class WumpusMap {;
     private int ladderC;
     private int ladderR;
     public WumpusMap(){
+        createMap();
+    }
+    public void createMap(){
 
     }
 
@@ -17,9 +20,19 @@ public class WumpusMap {;
         return ladderR;
     }
     public WumpusSquare getSquare(int col, int row){
+        if (col>grid.length||row>grid[0].length||col<0||row<0){
+            return null;
+        }
         return grid[row][col];
     }
     public String toString(){
-        return"a";
+        String a ="";
+        for(int y=0; y<grid[0].length; y++){
+            for (int x=0; x< grid.length; x++){
+                a+=grid[y][x].toString();
+            }
+            a+="\n";
+        }
+        return a;
     }
 }
