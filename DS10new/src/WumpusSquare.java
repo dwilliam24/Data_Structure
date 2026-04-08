@@ -89,6 +89,7 @@ public class WumpusSquare {
         else if (wumpus) return "W";
         else if (deadWumpus) return "D";
         else if (ladder) return "L";
+        else if (breeze) return "I";
         else return "*";
     }
 }

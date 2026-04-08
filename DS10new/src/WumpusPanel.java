@@ -76,7 +76,6 @@ public class WumpusPanel extends JPanel implements KeyListener {
     }
     public void paint(Graphics g){
         g.drawImage(fog,0,0,null);
-==
     }
 
     public void addNotify(){
