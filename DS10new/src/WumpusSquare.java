@@ -7,15 +7,16 @@ public class WumpusSquare {
     private boolean deadWumpus;
     private boolean stench;
     private boolean visited;
-    public WumpusSquare(){
-        gold=false;
-        ladder=false;
-        pit=false;
-        breeze=false;
-        wumpus=false;
-        deadWumpus=false;
-        stench=false;
-        visited=false;
+
+    public WumpusSquare() {
+        gold = false;
+        ladder = false;
+        pit = false;
+        breeze = false;
+        wumpus = false;
+        deadWumpus = false;
+        stench = false;
+        visited = false;
     }
 
     public void setGold(boolean gold) {
@@ -81,15 +82,15 @@ public class WumpusSquare {
     public boolean getWumpus() {
         return wumpus;
     }
-    public String toString(){
-        if (gold&&wumpus) return "@";
-        else if (deadWumpus&&gold) return "!";
+
+    public String toString() {
+        if (gold && wumpus) return "@";
+        else if (deadWumpus && gold) return "!";
         else if (gold) return "G";
         else if (pit) return "P";
         else if (wumpus) return "W";
         else if (deadWumpus) return "D";
         else if (ladder) return "L";
-        else if (breeze) return "I";
         else return "*";
     }
 }

@@ -7,9 +7,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 public class WumpusPanel extends JPanel implements KeyListener {
-    public static final int PLAYING =0;
-    public static final int DEAD =1;
-    public static final int WON =2;
+    public static final int PLAYING = 0;
+    public static final int DEAD = 1;
+    public static final int WON = 2;
 
     private int status;
     private WumpusPlayer player;
@@ -30,9 +30,10 @@ public class WumpusPanel extends JPanel implements KeyListener {
     private BufferedImage playerLeft;
     private BufferedImage playerRight;
     private BufferedImage buffer;
-    public WumpusPanel(){
-        setBounds(0,0,500,500);
-        buffer = new BufferedImage(500,500,BufferedImage.TYPE_CUSTOM);
+
+    public WumpusPanel() {
+        setBounds(0, 0, 900, 900);
+        buffer = new BufferedImage(600,700, BufferedImage.TYPE_4BYTE_ABGR);
 
         try {
             floor = ImageIO.read(new File("src/WumpusImages/Floor.gif"));
@@ -52,10 +53,12 @@ public class WumpusPanel extends JPanel implements KeyListener {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        reset();
     }
+
     @Override
     public void keyTyped(KeyEvent e) {
-        if (e.getKeyChar()=='a'){
+        if (e.getKeyChar() == 'a') {
             System.out.println("a");
         }
     }
@@ -69,16 +72,59 @@ public class WumpusPanel extends JPanel implements KeyListener {
     public void keyReleased(KeyEvent e) {
         //
     }
-    public void reset(){
-        status=0;
+
+    public void reset() {
+        status = 0;
         map = new WumpusMap();
-        player= new WumpusPlayer(0,true,false);
-    }
-    public void paint(Graphics g){
-        g.drawImage(fog,0,0,null);
+        player = new WumpusPlayer(0, true, false);
     }
 
-    public void addNotify(){
+    public void paint(Graphics g) {
+        Graphics bg = buffer.getGraphics();
+        for (int x = 0; x < map.NUM_ROWS; x++) {
+            for (int y = 0; y < map.NUM_COLUMNS; y++) {
+                bg.drawImage(floor,(y*50),(x*50),null);
+            }
+        }
+        for (int x = 0; x < map.NUM_ROWS; x++) {
+            for (int y = 0; y < map.NUM_COLUMNS; y++) {
+                String a = map.getSquare(y,x).toString();
+                if (a.equals("@")){
+                    bg.drawImage(gold,(y*50),(x*50),null);
+                    bg.drawImage(wumpus,(y*50),(x*50),null);
+                }
+                else if (a.equals("!")){
+                    bg.drawImage(gold,(y*50),x*50,null);
+                    bg.drawImage(deadWumpus,(y*50),(x*50),null);
+                }
+                else if (a.equals("G")){
+                    bg.drawImage(gold,(y*50),x*50,null);
+                }
+                else if (a.equals("P")){
+                    bg.drawImage(pit,(y*50),x*50,null);
+                }
+                else if (a.equals("W")){
+                    bg.drawImage(wumpus,(y*50),x*50,null);
+                }else if (a.equals("D")){
+                    bg.drawImage(deadWumpus,(y*50),x*50,null);
+                }
+                else if (a.equals("L")){
+                    bg.drawImage(ladder,(y*50),x*50,null);
+                }
+                else if (map.getSquare(y,x).getStench()){
+                    bg.drawImage(stench,(y*50),x*50,null);
+                }
+                else if (map.getSquare(y,x).getBreeze()){
+                    bg.drawImage(breeze,(y*50),x*50,null);
+                }
+
+            }
+        }
+
+        g.drawImage(buffer,0,0,null);
+    }
+
+    public void addNotify() {
         super.addNotify();
         requestFocus();
     }
