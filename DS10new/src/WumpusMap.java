@@ -29,7 +29,6 @@ public class WumpusMap {
                 a.add(generator);
             }
         }
-        System.out.println(a);
         for (int i = 0; i < a.size(); i++) {
             if (a.get(i) - 10 < 0) {
                 grid[0][a.get(i)].setPit(true);
