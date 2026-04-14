@@ -1,9 +1,6 @@
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
 
 public class WumpusMap {
-    ;
     public static final int NUM_ROWS = 10;
     public static final int NUM_COLUMNS = 10;
     public static final int NUM_PITS = 10;
@@ -12,123 +9,148 @@ public class WumpusMap {
     private int ladderR;
 
     public WumpusMap() {
-        createMap();
+        boolean solved = false;
+        while (!solved) {
+            createMap();
+            solved = hasSolution();
+        }
+    }
+
+    private char[][] toMaze(int startR, int startC, int endR, int endC) {
+        char[][] maze = new char[NUM_ROWS][NUM_COLUMNS];
+        for (int r = 0; r < NUM_ROWS; r++) {
+            for (int c = 0; c < NUM_COLUMNS; c++) {
+                if (r == startR && c == startC)
+                    maze[r][c] = 'S';
+                else if (r == endR && c == endC)
+                    maze[r][c] = 'E';
+                else if (grid[r][c].getPit())
+                    maze[r][c] = 'W';
+                else
+                    maze[r][c] = '-';
+            }
+        }
+        return maze;
+    }
+
+    private boolean hasSolution() {
+        int goldR = -1, goldC = -1;
+        for (int r = 0; r < NUM_ROWS; r++) {
+            for (int c = 0; c < NUM_COLUMNS; c++) {
+                if (grid[r][c].getGold()) {
+                    goldR = r;
+                    goldC = c;
+                }
+            }
+        }
+        boolean ladderToGold = DS8_DFS.depthFirstSearch_Simple(toMaze(ladderR, ladderC, goldR, goldC));
+        return ladderToGold;
     }
 
     public void createMap() {
-        grid = new WumpusSquare[NUM_COLUMNS][NUM_ROWS];
-        for (int x = 0; x < grid.length; x++) {
-            for (int y = 0; y < grid[0].length; y++) {
-                grid[y][x] = new WumpusSquare();
-            }
-        }
-        ArrayList<Integer> a = new ArrayList<>();
-        while (a.size() < 10) {
-            int generator = (int) (Math.random() * 100);
-            if (!a.contains(generator)) {
-                a.add(generator);
-            }
-        }
-        for (int i = 0; i < a.size(); i++) {
-            if (a.get(i) - 10 < 0) {
-                grid[0][a.get(i)].setPit(true);
-            } else if (a.get(i) == 100) {
-                grid[10][10].setPit(true);
-            } else {
-                grid[Integer.parseInt(String.valueOf(a.get(i).toString().charAt(0)))][Integer.parseInt(String.valueOf(a.get(i).toString().charAt(1)))].setPit(true);
-            }
-        }
-        for (int x = 0; x < grid.length; x++) {
-            for (int y = 0; y < grid[0].length; y++) {
-                if (grid[y][x].getPit()) {
-                    if (y - 1 >= 0 && !grid[y - 1][x].getPit()) {
-                        grid[y - 1][x].setBreeze(true);
-                    }
-                    if (y + 1 < grid[0].length && !grid[y + 1][x].getPit()) {
-                        grid[y + 1][x].setBreeze(true);
-                    }
-                    if (x - 1 >= 0 && !grid[y][x - 1].getPit()) {
-                        grid[y][x - 1].setBreeze(true);
-                    }
-                    if (x + 1 < grid.length && !grid[y][x + 1].getPit()) {
-                        grid[y][x + 1].setBreeze(true);
-                    }
-                }
-            }
-        }
-        boolean test = true;
-        while (test) {
-            int x = (int) (Math.random() * 9);
-            int y = (int) (Math.random() * 9);
-            if (!grid[y][x].getPit()) {
-                grid[y][x].setGold(true);
-                test = false;
+        grid = new WumpusSquare[NUM_ROWS][NUM_COLUMNS];
+        for (int r = 0; r < NUM_ROWS; r++) {
+            for (int c = 0; c < NUM_COLUMNS; c++) {
+                grid[r][c] = new WumpusSquare();
             }
         }
 
-        boolean test2 = true;
-        while (test2) {
-            int x = (int) (Math.random() * 9);
-            int y = (int) (Math.random() * 9);
-            if (!grid[y][x].getPit() && !grid[y][x].getGold()) {
-                grid[y][x].setWumpus(true);
-                test2 = false;
-            }
+        ArrayList<Integer> pitNums = new ArrayList<>();
+        while (pitNums.size() < NUM_PITS) {
+            int gen = (int) (Math.random() * 100);
+            if (!pitNums.contains(gen)) pitNums.add(gen);
         }
-        for (int x = 0; x < grid.length; x++) {
-            for (int y = 0; y < grid[0].length; y++) {
-                if (grid[y][x].getWumpus()) {
-                    if (y - 1 >= 0 && !grid[y - 1][x].getPit()) {
-                        grid[y - 1][x].setStench(true);
-                    }
-                    if (y + 1 < grid[0].length && !grid[y + 1][x].getPit()) {
-                        grid[y + 1][x].setStench(true);
-                    }
-                    if (x - 1 >= 0 && !grid[y][x - 1].getPit()) {
-                        grid[y][x - 1].setStench(true);
-                    }
-                    if (x + 1 < grid.length && !grid[y][x + 1].getPit()) {
-                        grid[y][x + 1].setStench(true);
-                    }
+        for (int num : pitNums) {
+            int r = num / 10;
+            int c = num % 10;
+            grid[r][c].setPit(true);
+        }
+
+        for (int r = 0; r < NUM_ROWS; r++) {
+            for (int c = 0; c < NUM_COLUMNS; c++) {
+                if (grid[r][c].getPit()) {
+                    if (r - 1 >= 0 && !grid[r - 1][c].getPit()) grid[r - 1][c].setBreeze(true);
+                    if (r + 1 < NUM_ROWS && !grid[r + 1][c].getPit()) grid[r + 1][c].setBreeze(true);
+                    if (c - 1 >= 0 && !grid[r][c - 1].getPit()) grid[r][c - 1].setBreeze(true);
+                    if (c + 1 < NUM_COLUMNS && !grid[r][c + 1].getPit()) grid[r][c + 1].setBreeze(true);
                 }
             }
         }
-        boolean test3 = true;
-        while (test3) {
-            int x = (int) (Math.random() * 9);
-            int y = (int) (Math.random() * 9);
-            if (!grid[y][x].getPit() && !grid[y][x].getGold() && !grid[y][x].getWumpus()) {
-                grid[y][x].setLadder(true);
-                ladderC = x;
-                ladderR = y;
-                test3 = false;
+
+        boolean placing = true;
+        while (placing) {
+            int r = (int) (Math.random() * NUM_ROWS);
+            int c = (int) (Math.random() * NUM_COLUMNS);
+            if (!grid[r][c].getPit()) {
+                grid[r][c].setGold(true);
+                placing = false;
+            }
+        }
+
+        placing = true;
+        while (placing) {
+            int r = (int) (Math.random() * NUM_ROWS);
+            int c = (int) (Math.random() * NUM_COLUMNS);
+            if (!grid[r][c].getPit() && !grid[r][c].getGold()) {
+                grid[r][c].setWumpus(true);
+                placing = false;
+            }
+        }
+
+        for (int r = 0; r < NUM_ROWS; r++) {
+            for (int c = 0; c < NUM_COLUMNS; c++) {
+                if (grid[r][c].getWumpus()) {
+                    if (r - 1 >= 0) grid[r - 1][c].setStench(true);
+                    if (r + 1 < NUM_ROWS) grid[r + 1][c].setStench(true);
+                    if (c - 1 >= 0) grid[r][c - 1].setStench(true);
+                    if (c + 1 < NUM_COLUMNS) grid[r][c + 1].setStench(true);
+                }
+            }
+        }
+
+        placing = true;
+        while (placing) {
+            int r = (int) (Math.random() * NUM_ROWS);
+            int c = (int) (Math.random() * NUM_COLUMNS);
+            if (!grid[r][c].getPit() && !grid[r][c].getGold() && !grid[r][c].getWumpus()) {
+                grid[r][c].setLadder(true);
+                ladderC = c;
+                ladderR = r;
+                placing = false;
             }
         }
     }
 
-    public int getLadderC() {
+    public int[] wumpusLoc() {
+        for (int r = 0; r < NUM_ROWS; r++) {
+            for (int c = 0; c < NUM_COLUMNS; c++) {
+                if (grid[r][c].getWumpus()) return new int[]{c, r};
+            }
+        }
+        return null;
+    }
+
+    public int getLadderCol() {
         return ladderC;
     }
 
-    public int getLadderR() {
+    public int getLadderRow() {
         return ladderR;
     }
 
     public WumpusSquare getSquare(int col, int row) {
-        if (col > grid.length || row > grid[0].length || col < 0 || row < 0) {
-            return null;
-        }
+        if (col < 0 || col >= NUM_COLUMNS || row < 0 || row >= NUM_ROWS) return null;
         return grid[row][col];
     }
 
     public String toString() {
-        String a = "";
-        for (int y = 0; y < grid[0].length; y++) {
-            for (int x = 0; x < grid.length; x++) {
-                a += grid[y][x].toString();
+        String result = "";
+        for (int r = 0; r < NUM_ROWS; r++) {
+            for (int c = 0; c < NUM_COLUMNS; c++) {
+                result += grid[r][c].toString();
             }
-            a += "\n";
+            result += "\n";
         }
-        return a;
+        return result;
     }
 }

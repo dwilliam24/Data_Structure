@@ -23,20 +23,24 @@ public class WumpusSquare {
         this.gold = gold;
     }
 
-    public void setBreeze(boolean breeze) {
-        this.breeze = breeze;
-    }
-
-    public void setDeadWumpus(boolean deadWumpus) {
-        this.deadWumpus = deadWumpus;
-    }
-
     public void setLadder(boolean ladder) {
         this.ladder = ladder;
     }
 
     public void setPit(boolean pit) {
         this.pit = pit;
+    }
+
+    public void setBreeze(boolean breeze) {
+        this.breeze = breeze;
+    }
+
+    public void setWumpus(boolean wumpus) {
+        this.wumpus = wumpus;
+    }
+
+    public void setDeadWumpus(boolean dw) {
+        this.deadWumpus = dw;
     }
 
     public void setStench(boolean stench) {
@@ -47,20 +51,8 @@ public class WumpusSquare {
         this.visited = visited;
     }
 
-    public void setWumpus(boolean wumpus) {
-        this.wumpus = wumpus;
-    }
-
     public boolean getGold() {
         return gold;
-    }
-
-    public boolean getBreeze() {
-        return breeze;
-    }
-
-    public boolean getDeadWumpus() {
-        return deadWumpus;
     }
 
     public boolean getLadder() {
@@ -71,6 +63,18 @@ public class WumpusSquare {
         return pit;
     }
 
+    public boolean getBreeze() {
+        return breeze;
+    }
+
+    public boolean getWumpus() {
+        return wumpus;
+    }
+
+    public boolean getDeadWumpus() {
+        return deadWumpus;
+    }
+
     public boolean getStench() {
         return stench;
     }
@@ -79,18 +83,14 @@ public class WumpusSquare {
         return visited;
     }
 
-    public boolean getWumpus() {
-        return wumpus;
-    }
-
     public String toString() {
         if (gold && wumpus) return "@";
-        else if (deadWumpus && gold) return "!";
-        else if (gold) return "G";
-        else if (pit) return "P";
-        else if (wumpus) return "W";
-        else if (deadWumpus) return "D";
-        else if (ladder) return "L";
-        else return "*";
+        if (gold && deadWumpus) return "!";
+        if (gold) return "G";
+        if (pit) return "P";
+        if (wumpus) return "W";
+        if (deadWumpus) return "D";
+        if (ladder) return "L";
+        return "*";
     }
 }

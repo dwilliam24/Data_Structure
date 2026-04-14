@@ -1,5 +1,5 @@
 public class WumpusMain {
-    public static void main(String[] args){
+    public static void main(String[] args) {
         new WumpusFrame();
     }
 }
