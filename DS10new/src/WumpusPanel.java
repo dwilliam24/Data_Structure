@@ -65,7 +65,7 @@ public class WumpusPanel extends JPanel implements KeyListener {
         player.setColPosition(map.getLadderCol());
         player.setRowPosition(map.getLadderRow());
         map.getSquare(map.getLadderCol(), map.getLadderRow()).setVisited(true);
-        message = "You bump into a ladder.";
+        message = "You smack ur huge cranium into a ladder";
     }
 
     private void checkCurrentSquare() {
@@ -75,21 +75,21 @@ public class WumpusPanel extends JPanel implements KeyListener {
         if (sq == null) return;
 
         if (sq.getPit()) {
-            message = "You fell down a pit to your death!";
+            message = "you slipped and fell... oopsie >_<";
             status = DEAD;
             return;
         }
         if (sq.getWumpus()) {
-            message = "You are eaten by the Wumpus!";
+            message = "you got munched by a wumpy.. :3";
             status = DEAD;
             return;
         }
 
         StringBuilder msg = new StringBuilder();
-        if (sq.getBreeze()) msg.append("You feel a breeze.  ");
+        if (sq.getBreeze()) msg.append("you feel the wind running through your toes");
         if (sq.getStench() || sq.getDeadWumpus()) msg.append("You smell a stench.  ");
         if (sq.getGold() && !player.getGold()) msg.append("You see a glimmer!  ");
-        if (sq.getLadder()) msg.append("You bump into a ladder.  ");
+        if (sq.getLadder()) msg.append("You smack ur huge cranium into a ladder");
         message = msg.toString().trim();
     }
 
