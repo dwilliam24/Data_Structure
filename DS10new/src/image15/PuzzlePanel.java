@@ -28,7 +28,6 @@ public class PuzzlePanel extends JPanel implements MouseListener {
     private JLabel moveLabel;
     private JButton newGameButton;
     private JButton toggleButton;
-    private JLabel winLabel;
 
     public PuzzlePanel() {
         setLayout(new BorderLayout());
@@ -101,7 +100,6 @@ public class PuzzlePanel extends JPanel implements MouseListener {
             drawGrid((Graphics2D) g);
         }
     }
-    // ── Drawing ────────────────────────────────────────────────────────────────
 
     private void drawGrid(Graphics2D g) {
         for (int r = 0; r < SIZE; r++) {
@@ -130,16 +128,13 @@ public class PuzzlePanel extends JPanel implements MouseListener {
         }
     }
 
-    // ── Game logic ─────────────────────────────────────────────────────────────
 
     private void newGame() {
         gameWon = false;
         moveCount = 0;
         moveLabel.setText("Moves: 0");
-        winLabel.setText(" ");
         newGameButton.setEnabled(false);
 
-        // Start from the solved state
         for (int i = 0; i < SIZE * SIZE - 1; i++) {
             int r = i / SIZE, c = i % SIZE;
             board[r][c] = new PuzzlePiece(i + 1, tileImages != null ? tileImages[i] : null);
@@ -148,7 +143,6 @@ public class PuzzlePanel extends JPanel implements MouseListener {
         emptyRow = SIZE - 1;
         emptyCol = SIZE - 1;
 
-        // Shuffle by making 200 random valid moves — always solvable
         int[][] dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
         Random rand = new Random();
         for (int i = 0; i < 200; i++) {
@@ -189,7 +183,6 @@ public class PuzzlePanel extends JPanel implements MouseListener {
         newGameButton.setEnabled(true);
     }
 
-    // ── MouseListener ──────────────────────────────────────────────────────────
 
     @Override
     public void mousePressed(MouseEvent e) {
