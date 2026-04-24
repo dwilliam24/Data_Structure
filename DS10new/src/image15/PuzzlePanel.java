@@ -30,14 +30,14 @@ public class PuzzlePanel extends JPanel implements MouseListener {
     private JButton toggleButton;
 
     public PuzzlePanel() {
-        setLayout(new BorderLayout());
         board = new PuzzlePiece[SIZE][SIZE];
         showImages = false;
         gameWon = false;
+        setSize(100,100);
 
         loadImage();
-        initControls();
-        initGridCanvas();
+        buttons();
+        addGridCanvas();
         newGame();
     }
 
@@ -63,8 +63,8 @@ public class PuzzlePanel extends JPanel implements MouseListener {
     }
 
 
-    private void initControls() {
-        JPanel top = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 8));
+    private void buttons() {
+        JPanel top = new JPanel(null);
 
         moveLabel = new JLabel("Moves: 0");
         moveLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
@@ -73,25 +73,15 @@ public class PuzzlePanel extends JPanel implements MouseListener {
         newGameButton.setEnabled(false);
         newGameButton.addActionListener(e -> newGame());
 
-        toggleButton = new JButton("Images");
+        toggleButton = new JButton("Image");
         toggleButton.addActionListener(e -> toggleMode());
 
         top.add(moveLabel);
         top.add(newGameButton);
         top.add(toggleButton);
-        add(top, BorderLayout.NORTH);
     }
 
-    private void initGridCanvas() {
-        int gridPx = SIZE * TILE_SIZE + (SIZE - 1);
 
-        gridCanvas = new GridCanvas();
-        gridCanvas.setPreferredSize(new Dimension(gridPx, gridPx));
-        gridCanvas.setBackground(Color.DARK_GRAY);
-        gridCanvas.addMouseListener(this);
-
-        add(gridCanvas, BorderLayout.CENTER);
-    }
 
     private class GridCanvas extends JPanel {
         @Override
@@ -164,7 +154,10 @@ public class PuzzlePanel extends JPanel implements MouseListener {
 
     private void toggleMode() {
         showImages = !showImages;
-        toggleButton.setText(showImages ? "Numbers" : "Images");
+        if (showImages){
+            toggleButton.setText("Numbers");
+        }
+        else toggleButton.setText("Images");
         gridCanvas.repaint();
     }
 

@@ -7,7 +7,7 @@ public class PuzzleFrame extends JFrame {
     public PuzzleFrame() {
         super("15 Puzzle");
         add(new PuzzlePanel());
-        pack();
+        setSize(600,600);
         setResizable(false);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
