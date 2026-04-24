@@ -15,6 +15,10 @@ public class PuzzlePanel extends JPanel implements MouseListener {
 
     private static final int SIZE = 4;
     private static final int TILE_SIZE = 120;
+    private static final int H = 40;
+    private static final int winH = 30;
+    private static final int width = SIZE * TILE_SIZE;
+    private static final int height = H + (SIZE * TILE_SIZE) + winH;
 
     private PuzzlePiece[][] board;
     private int emptyRow, emptyCol;
@@ -23,91 +27,86 @@ public class PuzzlePanel extends JPanel implements MouseListener {
     private boolean gameWon;
 
     private BufferedImage[] tileImages;
+    private int imageIndex = 1;
 
-    private JPanel gridCanvas;
     private JLabel moveLabel;
     private JButton newGameButton;
     private JButton toggleButton;
+    private JButton nextImageButton;
     private JLabel winLabel;
 
     public PuzzlePanel() {
-        setLayout(new BorderLayout());
+        setLayout(null);
+        setPreferredSize(new Dimension(width, height));
+
         board = new PuzzlePiece[SIZE][SIZE];
         showImages = false;
         gameWon = false;
 
         loadImage();
-        initControls();
-        initGridCanvas();
+        buttons();
+        addMouseListener(this);
         newGame();
     }
-
 
     private void loadImage() {
         tileImages = new BufferedImage[SIZE * SIZE];
         try {
-            BufferedImage full = ImageIO.read(new File("src/image15/image.png"));
-
-            int gridPx = SIZE * TILE_SIZE;
-            BufferedImage scaled = new BufferedImage(gridPx, gridPx, BufferedImage.TYPE_INT_RGB);
+            BufferedImage full = ImageIO.read(new File("src/image15/image" + imageIndex + ".png"));
+            BufferedImage scaled = new BufferedImage(SIZE * TILE_SIZE, SIZE * TILE_SIZE, BufferedImage.TYPE_INT_RGB);
             Graphics2D g = scaled.createGraphics();
-            g.drawImage(full, 0, 0, gridPx, gridPx, null);
+            g.drawImage(full, 0, 0, SIZE * TILE_SIZE, SIZE * TILE_SIZE, null);
 
             for (int i = 0; i < SIZE * SIZE; i++) {
-                int r = i / SIZE;
-                int c = i % SIZE;
+                int r = i / SIZE, c = i % SIZE;
                 tileImages[i] = scaled.getSubimage(c * TILE_SIZE, r * TILE_SIZE, TILE_SIZE, TILE_SIZE);
             }
         } catch (IOException e) {
-            System.out.println(e);
+            tileImages = null;
         }
     }
 
-
-    private void initControls() {
-        JPanel top = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 8));
-
+    private void buttons() {
         moveLabel = new JLabel("Moves: 0");
-        moveLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
+        moveLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
+        moveLabel.setBounds(5, 5, 100, 30);
 
         newGameButton = new JButton("New Game");
         newGameButton.setEnabled(false);
+        newGameButton.setBounds(110, 5, 100, 30);
         newGameButton.addActionListener(e -> newGame());
 
         toggleButton = new JButton("Images");
+        toggleButton.setBounds(215, 5, 90, 30);
         toggleButton.addActionListener(e -> toggleMode());
 
-        top.add(moveLabel);
-        top.add(newGameButton);
-        top.add(toggleButton);
-        add(top, BorderLayout.NORTH);
+        nextImageButton = new JButton("Next Image");
+        nextImageButton.setBounds(310, 5, 110, 30);
+        nextImageButton.addActionListener(e -> nextImage());
+
+        winLabel = new JLabel(" ");
+        winLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
+        winLabel.setForeground(new Color(0, 140, 0));
+        winLabel.setBounds(0, H + (SIZE * TILE_SIZE), width, winH);
+
+        add(moveLabel);
+        add(newGameButton);
+        add(toggleButton);
+        add(nextImageButton);
+        add(winLabel);
     }
 
-    private void initGridCanvas() {
-        int gridPx = SIZE * TILE_SIZE + (SIZE - 1);
-
-        gridCanvas = new GridCanvas();
-        gridCanvas.setPreferredSize(new Dimension(gridPx, gridPx));
-        gridCanvas.setBackground(Color.DARK_GRAY);
-        gridCanvas.addMouseListener(this);
-
-        add(gridCanvas, BorderLayout.CENTER);
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        drawGrid((Graphics2D) g);
     }
-
-    private class GridCanvas extends JPanel {
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            drawGrid((Graphics2D) g);
-        }
-    }
-    // ── Drawing ────────────────────────────────────────────────────────────────
 
     private void drawGrid(Graphics2D g) {
         for (int r = 0; r < SIZE; r++) {
             for (int c = 0; c < SIZE; c++) {
-                int x = c * (TILE_SIZE);
-                int y = r * (TILE_SIZE);
+                int x = c * TILE_SIZE;
+                int y = H + r * TILE_SIZE;
                 PuzzlePiece piece = board[r][c];
 
                 if (piece == null) {
@@ -122,15 +121,11 @@ public class PuzzlePanel extends JPanel implements MouseListener {
                     g.setFont(new Font("SansSerif", Font.BOLD, 36));
                     FontMetrics fm = g.getFontMetrics();
                     String txt = String.valueOf(piece.getValue());
-                    g.drawString(txt,
-                            x + (TILE_SIZE - fm.stringWidth(txt)) / 2,
-                            y + (TILE_SIZE + fm.getAscent() - fm.getDescent()) / 2);
+                    g.drawString(txt, x + (TILE_SIZE - fm.stringWidth(txt)) / 2, y + (TILE_SIZE + fm.getAscent() - fm.getDescent()) / 2);
                 }
             }
         }
     }
-
-    // ── Game logic ─────────────────────────────────────────────────────────────
 
     private void newGame() {
         gameWon = false;
@@ -139,7 +134,6 @@ public class PuzzlePanel extends JPanel implements MouseListener {
         winLabel.setText(" ");
         newGameButton.setEnabled(false);
 
-        // Start from the solved state
         for (int i = 0; i < SIZE * SIZE - 1; i++) {
             int r = i / SIZE, c = i % SIZE;
             board[r][c] = new PuzzlePiece(i + 1, tileImages != null ? tileImages[i] : null);
@@ -148,15 +142,15 @@ public class PuzzlePanel extends JPanel implements MouseListener {
         emptyRow = SIZE - 1;
         emptyCol = SIZE - 1;
 
-        // Shuffle by making 200 random valid moves — always solvable
         int[][] dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
         Random rand = new Random();
         for (int i = 0; i < 200; i++) {
             List<int[]> moves = new ArrayList<>();
             for (int[] d : dirs) {
-                int nr = emptyRow + d[0], nc = emptyCol + d[1];
-                if (nr >= 0 && nr < SIZE && nc >= 0 && nc < SIZE)
-                    moves.add(new int[]{nr, nc});
+                int r = emptyRow + d[0];
+                int c = emptyCol + d[1];
+                if (r >= 0 && r < SIZE && c >= 0 && c < SIZE)
+                    moves.add(new int[]{r, c});
             }
             int[] move = moves.get(rand.nextInt(moves.size()));
             board[emptyRow][emptyCol] = board[move[0]][move[1]];
@@ -164,14 +158,35 @@ public class PuzzlePanel extends JPanel implements MouseListener {
             emptyRow = move[0];
             emptyCol = move[1];
         }
-
-        gridCanvas.repaint();
+        repaint();
     }
 
     private void toggleMode() {
         showImages = !showImages;
-        toggleButton.setText(showImages ? "Numbers" : "Images");
-        gridCanvas.repaint();
+        if (showImages) toggleButton.setText("Numbers");
+        else toggleButton.setText("Images");
+        repaint();
+    }
+
+    private void nextImage() {
+        imageIndex++;
+        loadImage();
+
+        if (tileImages == null) {
+            imageIndex = 1;
+            loadImage();
+        }
+
+        for (int r = 0; r < SIZE; r++) {
+            for (int c = 0; c < SIZE; c++) {
+                if (board[r][c] != null) {
+                    int val = board[r][c].getValue();
+                    board[r][c] = new PuzzlePiece(val, tileImages[val - 1]);
+                }
+            }
+        }
+
+        repaint();
     }
 
     private void checkWin() {
@@ -187,16 +202,15 @@ public class PuzzlePanel extends JPanel implements MouseListener {
         }
         gameWon = true;
         newGameButton.setEnabled(true);
+        winLabel.setText("Puzzle solved in " + moveCount + " moves! Press New Game to play again.");
     }
-
-    // ── MouseListener ──────────────────────────────────────────────────────────
 
     @Override
     public void mousePressed(MouseEvent e) {
         if (gameWon) return;
 
-        int col = e.getX() / (TILE_SIZE);
-        int row = e.getY() / (TILE_SIZE);
+        int col = e.getX() / TILE_SIZE;
+        int row = (e.getY() - H) / TILE_SIZE;
 
         if (row < 0 || row >= SIZE || col < 0 || col >= SIZE) return;
         if (board[row][col] == null) return;
@@ -211,7 +225,7 @@ public class PuzzlePanel extends JPanel implements MouseListener {
         moveCount++;
         moveLabel.setText("Moves: " + moveCount);
 
-        gridCanvas.repaint();
+        repaint();
         checkWin();
     }
 

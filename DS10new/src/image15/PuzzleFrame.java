@@ -9,7 +9,6 @@ public class PuzzleFrame extends JFrame {
         add(new PuzzlePanel());
         pack();
         setResizable(false);
-        setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
     }
