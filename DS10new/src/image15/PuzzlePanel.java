@@ -21,7 +21,8 @@ public class PuzzlePanel extends JPanel implements MouseListener {
     private static final int height = H + (SIZE * TILE_SIZE) + winH;
 
     private PuzzlePiece[][] board;
-    private int emptyRow, emptyCol;
+    private int emptyRow;
+    private int emptyCol;
     private int moveCount;
     private boolean showImages;
     private boolean gameWon;
@@ -144,7 +145,7 @@ public class PuzzlePanel extends JPanel implements MouseListener {
 
         int[][] dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
         Random rand = new Random();
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < 312; i++) {
             List<int[]> moves = new ArrayList<>();
             for (int[] d : dirs) {
                 int r = emptyRow + d[0];
