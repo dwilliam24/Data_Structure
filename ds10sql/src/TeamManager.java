@@ -22,6 +22,7 @@ public class TeamManager {
                 Enter choice:
                 """;
         Scanner scanner = new Scanner(System.in);
+        Boolean loop = true;
 
         try
         {
@@ -30,52 +31,46 @@ public class TeamManager {
         }
         catch(Exception e)
         {
-
             System.out.println(e);
         }
 
-        System.out.println(menu);
-        int choice = scanner.nextInt();
-        while (choice>10||choice<1){
+        while(loop) {
             System.out.println(menu);
-            choice=scanner.nextInt();
-        }
-        if (choice==1){
+            int choice = scanner.nextInt();
+            while (choice > 10 || choice < 1) {
+                System.out.println(menu);
+                choice = scanner.nextInt();
+            }
+            if (choice == 1) {
 
-        }
-        else if (choice==2){
+            } else if (choice == 2) {
 
-        }
-        else if (choice==3){
+            } else if (choice == 3) {
 
-        }
-        else if (choice==4){
+            } else if (choice == 4) {
 
-        }
-        else if (choice==5){
+            } else if (choice == 5) {
 
-        }
-        else if (choice==6){
+            } else if (choice == 6) {
 
-        }
-        else if (choice==7){
+            } else if (choice == 7) {
 
-        }
-        else if (choice==8){
+            } else if (choice == 8) {
 
-        }
-        else if (choice==9){
+            } else if (choice == 9) {
 
-        }
-        else {
-
+            } else {
+                loop=false;
+            }
         }
 
 
 
 
 
-        try {connection.close();}
+        try {
+            connection.close();
+        }
         catch (SQLException e) {
             throw new RuntimeException(e);
         }
